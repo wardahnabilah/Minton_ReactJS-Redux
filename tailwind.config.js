@@ -18,6 +18,9 @@ module.exports = {
         'accent-lightpurple': '#9BABB8',
         'accent-darkerpurple': '#556877'
       },
+      fontSize: {
+        '2.5xl': '1.75rem'
+      },
       backgroundImage: {
         'bgHero': "url('./assets/images/bg-hero.png')"
       }
