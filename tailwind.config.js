@@ -19,6 +19,9 @@ module.exports = {
         'accent-darkerpurple': '#556877'
       },
     },
+    variants: {
+      fill: ['hover']
+    }
   },
   plugins: [],
 }

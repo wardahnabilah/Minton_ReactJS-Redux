@@ -8,3 +8,8 @@
 body {
     font-family: 'Source Sans 3', sans-serif;
 }
+
+.active {
+    color: theme('colors.accent-yellow');
+    font-weight: bold;
+}
