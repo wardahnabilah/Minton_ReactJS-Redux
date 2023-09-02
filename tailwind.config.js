@@ -18,6 +18,9 @@ module.exports = {
         'accent-lightpurple': '#9BABB8',
         'accent-darkerpurple': '#556877'
       },
+      backgroundImage: {
+        'bgHero': "url('./assets/images/bg-hero.png')"
+      }
     },
     variants: {
       fill: ['hover']
