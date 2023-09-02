@@ -3,11 +3,24 @@ import mintonLogo from '../../../assets/images/minton-logo.png'
 import { NavItem } from './NavItem'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { ButtonLink } from '../../elements/Buttons'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeTheme } from '../../../store/themeSlice'
 
 export function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false)
     const location = useLocation()
+    const dispatch = useDispatch()
+    const { isDark } = useSelector(state=>state.theme)
 
+    // Dark theme
+    useEffect(()=>{
+        if(isDark) {
+            document.documentElement.classList.add("dark")
+        } else {
+            document.documentElement.classList.remove("dark")
+        }
+    }, [isDark])
+    
     // Close the navbar when the path change
     useEffect(()=>{
         setIsNavOpen(false)
@@ -36,13 +49,17 @@ export function Header() {
                             <NavLink to="/booking-schedule" className="max-md:block">Booking Schedule</NavLink>
                         </NavItem>
                         <NavItem>
-                            <svg className="inline w-6 mr-1 fill-primary-dark dark:fill-white hover:cursor-pointer group-hover:fill-accent-yellow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.995 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007-2.246-5.007-5.007-5.007S6.995 9.239 6.995 12zM11 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2H2zm17 0h3v2h-3zM5.637 19.778l-1.414-1.414 2.121-2.121 1.414 1.414zM16.242 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.344 7.759 4.223 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z"></path></svg>
-                            <span>
-                                Light Mode
-                            </span>
+                            <div onClick={()=> dispatch(changeTheme())}>
+                                { isDark ? <svg className="inline w-5 mr-2 pb-1 fill-primary-dark dark:fill-white hover:cursor-pointer group-hover:fill-accent-yellow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z"></path></svg>
+                                         : <svg className="inline w-6 mr-1 fill-primary-dark dark:fill-white hover:cursor-pointer group-hover:fill-accent-yellow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.995 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007-2.246-5.007-5.007-5.007S6.995 9.239 6.995 12zM11 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2H2zm17 0h3v2h-3zM5.637 19.778l-1.414-1.414 2.121-2.121 1.414 1.414zM16.242 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.344 7.759 4.223 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z"></path></svg>
+                                }
+                                <span>
+                                    {isDark ? 'Dark Mode' : 'Light Mode'}
+                                </span>
+                            </div>
                         </NavItem>
                         <NavItem>
-                            <ButtonLink pathName="/create-booking">Booking Sekarang</ButtonLink>
+                            <ButtonLink pathName="/create-booking">Booking Now</ButtonLink>
                         </NavItem>
                     </ul>
                 </nav>
