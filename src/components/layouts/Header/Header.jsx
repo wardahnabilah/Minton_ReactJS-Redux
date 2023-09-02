@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import mintonLogo from '../../../assets/images/minton-logo.png'
 import { NavItem } from './NavItem'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { ButtonLink } from '../../elements/Buttons'
+import { ButtonLinkSmall } from '../../elements/Buttons'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeTheme } from '../../../store/themeSlice'
 
@@ -59,7 +59,7 @@ export function Header() {
                             </div>
                         </NavItem>
                         <NavItem>
-                            <ButtonLink pathName="/create-booking">Booking Now</ButtonLink>
+                            <ButtonLinkSmall pathName="/create-booking">Booking Now</ButtonLinkSmall>
                         </NavItem>
                     </ul>
                 </nav>
