@@ -1,6 +1,6 @@
 export function NavItem({children}) {
     return (
-        <li className="group max-md:py-4 pl-12 max-md:border-b hover:text-accent-yellow hover:cursor-pointer">
+        <li className="group py-4 md:py-0 pl-12 border-b md:border-none hover:text-accent-yellow hover:cursor-pointer">
             {children}
         </li>
     )
