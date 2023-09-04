@@ -3,12 +3,15 @@ import { SelectForm } from "../../../components/elements/SelectForm"
 import { Radio, Checkbox } from "@material-tailwind/react"
 import { ButtonBtn } from "../../../components/elements/Buttons"
 import { FormValidationOne } from "../formValidation/FormValidationOne"
+import { useDispatch } from "react-redux"
+import { addNewData } from "../../../store/newBookingSlice"
 
 export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState(false)
     const [isFormFilled, setIsFormFilled] = useState(false)
     const { formData, handleChange, validateFormData } = FormValidationOne()
-
+    const dispatch = useDispatch()
+    
     useEffect(()=>{
         let filled = true
         
@@ -27,7 +30,7 @@ export function SelectScheduleForm({handleNextStep}) {
         event.preventDefault()
 
         if(validateFormData()) {
-            console.log(formData);
+            dispatch(addNewData(formData))
         }
 
         handleNextStep()
