@@ -27,6 +27,9 @@ module.exports = withMT({
       },
       backgroundImage: {
         'bgHero': "url('./assets/images/bg-hero.png')"
+      },
+      screens: {
+        'xsm': '450px'
       }
     },
     variants: {

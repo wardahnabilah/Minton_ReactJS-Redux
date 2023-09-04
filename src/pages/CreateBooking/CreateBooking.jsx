@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { StepProgresBar } from "./components/StepProgresBar"
+import { SelectScheduleForm } from "./components/SelectScheduleForm"
 
 export function CreateBooking() {
     const [activeStep, setActiveStep] = useState(0)
@@ -13,6 +14,10 @@ export function CreateBooking() {
                 activeStep={activeStep}
                 setActiveStep={setActiveStep}
             />
+
+            {/* First Step - Select Schedule */}
+            {activeStep === 0 && <SelectScheduleForm />}
+
         </section>       
     )
 }

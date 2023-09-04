@@ -8,6 +8,17 @@ export function ButtonLinkSmall({pathName, children: label}) {
 
 export function ButtonLink({pathName, children: label}) {
     return (
-        <Link to={pathName} className="inline-block px-8 py-2 text-lg rounded-full bg-primary-red shadow-lg hover:bg-primary-red-dark shadow-primary-red/40 text-white">{label}</Link>
+        <Link to={pathName} className="inline-block px-8 py-2 text-lg text-center rounded-full bg-primary-red shadow-lg hover:bg-primary-red-dark shadow-primary-red/40 text-white">{label}</Link>
+    )
+}
+
+export function ButtonBtn({onClick, className: addedClass,children: label}) {
+    return (
+        <button 
+            className={`${addedClass} inline-block px-8 py-2 text-lg text-center rounded-full bg-primary-red shadow-lg hover:bg-primary-red-dark shadow-primary-red/40 text-white`}
+            onClick={onClick}
+        >
+            {label}
+        </button>
     )
 }
