@@ -3,8 +3,14 @@ import { SelectForm } from "../../../components/elements/SelectForm"
 import { Radio, Checkbox } from "@material-tailwind/react"
 import { ButtonBtn } from "../../../components/elements/Buttons"
 
-export function SelectScheduleForm() { 
+export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState()
+
+    function handleFirstStep(event) {
+        event.preventDefault()
+
+        handleNextStep()
+    }
 
     // Rent radio button
     function handleRent(event) {
@@ -14,7 +20,7 @@ export function SelectScheduleForm() {
     }
     
     return (
-        <form id="firstStepForm" className="flex flex-col gap-5 w-9/12 max-w-sm mx-auto mt-10 text-lg">
+        <form onSubmit={handleFirstStep} id="firstStepForm" className="flex flex-col gap-5 w-9/12 max-w-sm mx-auto mt-10 text-lg">
             {/* Select booking date */}
             <SelectForm
                 name="bookingDate"
