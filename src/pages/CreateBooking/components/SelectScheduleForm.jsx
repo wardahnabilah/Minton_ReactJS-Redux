@@ -1,13 +1,34 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { SelectForm } from "../../../components/elements/SelectForm"
 import { Radio, Checkbox } from "@material-tailwind/react"
 import { ButtonBtn } from "../../../components/elements/Buttons"
+import { FormValidationOne } from "../formValidation/FormValidationOne"
 
 export function SelectScheduleForm({handleNextStep}) { 
-    const [isRent, setIsRent] = useState()
+    const [isRent, setIsRent] = useState(false)
+    const [isFormFilled, setIsFormFilled] = useState(false)
+    const { formData, handleChange, validateFormData } = FormValidationOne()
 
-    function handleFirstStep(event) {
+    useEffect(()=>{
+        let filled = true
+        
+        for(const key in formData) {
+            if(formData[key] === '') {
+                filled = false
+            }
+        }
+
+        if(filled) {
+            setIsFormFilled(true)
+        }
+    },[formData])
+
+    function handleForm(event) {
         event.preventDefault()
+
+        if(validateFormData()) {
+            console.log(formData);
+        }
 
         handleNextStep()
     }
@@ -17,18 +38,21 @@ export function SelectScheduleForm({handleNextStep}) {
         const radioBtnValue = event.target.value 
         
         setIsRent(radioBtnValue)
+        handleChange(event)
     }
     
     return (
-        <form onSubmit={handleFirstStep} id="firstStepForm" className="flex flex-col gap-5 w-9/12 max-w-sm mx-auto mt-10 text-lg">
+        <form onSubmit={handleForm} id="firstStepForm" className="flex flex-col gap-5 w-9/12 max-w-sm mx-auto mt-10 text-lg">
             {/* Select booking date */}
             <SelectForm
+                onChange={handleChange}
                 name="bookingDate"
                 options={dateOptions}
                 label="Select Date"
             />
             {/* Select booking hour */}
             <SelectForm
+                onChange={handleChange}
                 name="bookingHour" 
                 options={hourOptions}
                 label="Select Hour"
@@ -60,7 +84,8 @@ export function SelectScheduleForm({handleNextStep}) {
                 <label className="block text-xl mb-6">Select the equipment you need:</label>
                 <div className="flex flex-col gap-4">
                     <label className="relative flex items-center w-10/12 h-16 mx-auto px-4 overflow-hidden border-2 border-primary-dark/80 dark:border-white/90 rounded-2xl">
-                        <Checkbox 
+                        <Checkbox
+                            onChange={handleChange} 
                             name="racket"
                             value="yes"
                             icon={<CheckIcon />}
@@ -72,8 +97,9 @@ export function SelectScheduleForm({handleNextStep}) {
                         </svg>
                     </label>
                     <label className="relative flex items-center w-10/12 h-16 mx-auto px-4 overflow-hidden border-2 border-primary-dark/80 dark:border-white/90 rounded-2xl">
-                        <Checkbox 
-                            name="racket"
+                        <Checkbox
+                            onChange={handleChange} 
+                            name="shuttlecock"
                             value="yes"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
@@ -86,7 +112,7 @@ export function SelectScheduleForm({handleNextStep}) {
                 </div>
             </div>
 
-            <ButtonBtn className="mt-8">Next</ButtonBtn>
+            <ButtonBtn className="mt-8" disabled={!isFormFilled}>Next</ButtonBtn>
         </form>
     )
 }

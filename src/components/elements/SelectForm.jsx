@@ -1,7 +1,7 @@
-export function SelectForm({name, options, label}) {
+export function SelectForm({name, options, label, onChange}) {
     return (
         <div className="relative">
-            <select name={name} defaultValue="" className="w-full rounded-2xl px-7 py-2 hover:cursor-pointer text-primary-dark  bg-primary-light/60 dark:bg-accent-grey outline-none focus:outline-accent-yellow appearance-none">
+            <select onChange={onChange} name={name} defaultValue="" className="w-full rounded-2xl px-7 py-2 hover:cursor-pointer text-primary-dark  bg-primary-light/60 dark:bg-accent-grey outline-none focus:outline-accent-yellow appearance-none">
                 <option value="" disabled>{label}</option>
                 { options.map((option, index) => {
                     return <option value={option} key={index}>{option}</option>

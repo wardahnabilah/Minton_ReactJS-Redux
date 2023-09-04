@@ -18,7 +18,6 @@ export function StepProgresBar({activeStep, setActiveStep}) {
                     <div className="absolute -bottom-8 w-max" color="inherit">Select Schedule</div>
                 </Step>
                 <Step 
-                    onClick={()=>setActiveStep(1)} 
                     className="bg-accent-lightgrey dark:bg-accent-darkgrey text-accent-lightgrey dark:text-accent-lightgrey/40 hover:cursor-pointer"
                     activeClassName="bg-primary-dark dark:bg-accent-yellow text-primary-dark dark:text-white"
                     completedClassName="bg-primary-dark dark:bg-accent-yellow text-primary-dark dark:text-white"
