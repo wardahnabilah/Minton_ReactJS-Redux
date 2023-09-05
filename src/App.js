@@ -5,6 +5,7 @@ import { Homepage } from "./pages/Home/Homepage"
 import { CreateBooking } from "./pages/CreateBooking/CreateBooking"
 import { BookingSchedule } from "./pages/BookingSchedule/BookingSchedule"
 import { BookingSuccess } from "./pages/BookingSuccess/BookingSuccess"
+import { BookingDetail } from "./pages/BookingDetail/BookingDetail"
 
 export function App() {
     return(
@@ -16,6 +17,7 @@ export function App() {
                     <Route path="/create-booking" element={<CreateBooking />} />
                     <Route path="/booking-schedule" element={<BookingSchedule />} />
                     <Route path="/booking-success" element={<BookingSuccess />} />
+                    <Route path="/bookings/:id" element={<BookingDetail />} />
                 </Routes>
             </main>
             <Footer />

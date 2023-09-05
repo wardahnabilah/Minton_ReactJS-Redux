@@ -29,7 +29,7 @@ export function BookingSuccess() {
                     <p className="text-center">Show this booking ID to the staff upon arrival at Minton Court</p>
                 </CardBody>
                 <CardFooter className="grid px-8 md:px-16">
-                    <ButtonLink pathName="/booking-detail">See Booking Detail</ButtonLink>
+                    <ButtonLink pathName={`/bookings/${formData.bookingID}`}>See Booking Detail</ButtonLink>
                 </CardFooter>
             </Card>
         </section>
