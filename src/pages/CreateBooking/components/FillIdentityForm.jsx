@@ -2,10 +2,13 @@ import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
 import { FormValidationTwo } from "../formValidation/FormValidationTwo";
 import { useEffect, useState } from "react";
+import { addNewData } from "../../../store/newBookingSlice";
+import { useDispatch } from "react-redux";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
     const {formDataTwo, errors, handleCustomerName, handleCustomerWANumber, validateFormData} = FormValidationTwo()
+    const dispatch = useDispatch()
 
     // Disable the button if the form is not filled
     useEffect(()=>{
@@ -21,7 +24,7 @@ export function FillIdentityForm() {
         event.preventDefault()
 
         if(validateFormData()) {
-            console.log(formDataTwo)
+            dispatch(addNewData(formDataTwo))
         }
         
     }
