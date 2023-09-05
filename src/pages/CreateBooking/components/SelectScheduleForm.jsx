@@ -9,7 +9,7 @@ import { addNewData } from "../../../store/newBookingSlice"
 export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState(false)
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const { formData, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
+    const { formDataOne, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
     const dispatch = useDispatch()
     
     useEffect(()=>{
@@ -18,13 +18,13 @@ export function SelectScheduleForm({handleNextStep}) {
         } else {
             setIsFormFilled(false)
         } 
-    },[formData, validateFormData])
+    },[formDataOne, validateFormData])
 
     function handleForm(event) {
         event.preventDefault()
 
         if(validateFormData()) {
-            dispatch(addNewData(formData))
+            dispatch(addNewData(formDataOne))
 
             handleNextStep()
         }

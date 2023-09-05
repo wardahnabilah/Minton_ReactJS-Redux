@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export function FormValidationOne() {
     const [equipmentData, setEquipmentData] = useState({})
-    const [formData, setFormData] = useState({
+    const [formDataOne, setFormDataOne] = useState({
         bookingDate: '',
         bookingHour: '',
         rent: '',
@@ -14,7 +14,7 @@ export function FormValidationOne() {
     function handleChange(event) {
         const {name, value} = event.target
 
-        setFormData((prevFormData)=>{
+        setFormDataOne((prevFormData)=>{
             return {
                 ...prevFormData,
                 [name]: value
@@ -37,7 +37,7 @@ export function FormValidationOne() {
 
         // Store rent and equipment in formData state
         if(rent !== '') {
-            setFormData((prevFormData)=>{
+            setFormDataOne((prevFormData)=>{
                 return {
                     ...prevFormData,
                     rent: rent,
@@ -50,15 +50,15 @@ export function FormValidationOne() {
     // If user click 'Yes' on radio button (rent), 
     // set the equipment to equipmentData from checkbox (equipment)
     useEffect(()=>{
-        if(formData.rent === 'yes') {
-            setFormData((prevFormData)=>{
+        if(formDataOne.rent === 'yes') {
+            setFormDataOne((prevFormData)=>{
                 return {
                     ...prevFormData,
                     ...equipmentData
                 }
             })
         }
-    },[equipmentData, formData.rent])
+    },[equipmentData, formDataOne.rent])
 
 
     // For handling checkbox (equipment), get checkbox value
@@ -85,21 +85,21 @@ export function FormValidationOne() {
         let isValid = true
         
         // bookingDate
-        if(formData.bookingDate === '') {
+        if(formDataOne.bookingDate === '') {
             isValid = false
         }
 
         // bookingHour
-        if(formData.bookingHour === '') {
+        if(formDataOne.bookingHour === '') {
             isValid = false
         }
 
         // rent
-        if(formData.rent === '') {
+        if(formDataOne.rent === '') {
             isValid = false
-        } else if(formData.rent === 'yes') {
+        } else if(formDataOne.rent === 'yes') {
             // racket and/or shuttlecock must be filled
-            if(formData.racket === '' && formData.shuttlecock === '') {
+            if(formDataOne.racket === '' && formDataOne.shuttlecock === '') {
                 isValid = false
             }
         }
@@ -108,7 +108,7 @@ export function FormValidationOne() {
     }
 
     return {
-        formData,
+        formDataOne,
         handleChange,
         handleRent,
         handleEquipment,
