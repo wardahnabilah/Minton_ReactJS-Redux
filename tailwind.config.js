@@ -15,6 +15,7 @@ module.exports = withMT({
         'primary-light': '#39989B',
         'primary-red':'#D02D2D',
         'primary-red-dark': '#541212',
+        'accent-red-danger': '#F00F0F',
         'accent-yellow': '#F0DE36',
         'accent-lightgrey': '#B4B3AB',
         'accent-darkgrey': '#3E4646',
