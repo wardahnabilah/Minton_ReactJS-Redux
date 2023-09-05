@@ -3,7 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const newBookingSlice = createSlice({
     name: 'newBooking',
     initialState: {
-        formData: ''
+        formData: {
+            bookingDate: '',
+            bookingHour: '',
+            rent: '',
+            racket: '',
+            shuttlecock: '',
+            customerName: '',
+            customerWANumber: ''
+        }
     },
     reducers: {
         addNewData: (state, action) => {

@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export function FormValidationTwo() {
+    const { formData } = useSelector(state=>state.newBooking)
     const [errors, setErrors] = useState({
         customerName: '',
         customerWANumber: ''
     })
     const [formDataTwo, setFormDataTwo] = useState({
-        customerName: '',
-        customerWANumber: ''
+        customerName: formData.customerName,
+        customerWANumber: formData.customerWANumber
     })
 
     // Handle customerName

@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export function FormValidationOne() {
+    const { formData } = useSelector((state)=>state.newBooking)
     const [equipmentData, setEquipmentData] = useState({})
     const [formDataOne, setFormDataOne] = useState({
-        bookingDate: '',
-        bookingHour: '',
-        rent: '',
-        racket: '',
-        shuttlecock: ''
+        bookingDate: formData.bookingDate,
+        bookingHour: formData.bookingHour,
+        rent: formData.rent,
+        racket: formData.racket,
+        shuttlecock: formData.shuttlecock
     })
 
     // For handling bookingData and bookingHour input

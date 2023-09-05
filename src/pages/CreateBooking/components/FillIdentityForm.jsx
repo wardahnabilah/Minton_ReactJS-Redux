@@ -3,12 +3,13 @@ import { ButtonBtn } from "../../../components/elements/Buttons";
 import { FormValidationTwo } from "../formValidation/FormValidationTwo";
 import { useEffect, useState } from "react";
 import { addNewData } from "../../../store/newBookingSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
     const {formDataTwo, errors, handleCustomerName, handleCustomerWANumber, validateFormData} = FormValidationTwo()
     const dispatch = useDispatch()
+    const { formData } = useSelector(state=>state.newBooking)
 
     // Disable the button if the form is not filled
     useEffect(()=>{
@@ -37,6 +38,7 @@ export function FillIdentityForm() {
                 name="customerName" 
                 placeholder="Alex Johnson"
                 validationError={errors.customerName}
+                defaultValue={formData.customerName}
             />
             <InputForm
                 label="WA Number (10-15 digits)"
@@ -44,6 +46,7 @@ export function FillIdentityForm() {
                 name="customerWANumber" 
                 placeholder="081231231231"
                 validationError={errors.customerWANumber}
+                defaultValue={formData.customerWANumber}
             />
 
             <ButtonBtn disabled={!isFormFilled} className="mt-8">Create Booking</ButtonBtn>

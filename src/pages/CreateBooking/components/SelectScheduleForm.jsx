@@ -3,7 +3,7 @@ import { SelectForm } from "../../../components/elements/SelectForm"
 import { Radio, Checkbox } from "@material-tailwind/react"
 import { ButtonBtn } from "../../../components/elements/Buttons"
 import { FormValidationOne } from "../formValidation/FormValidationOne"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addNewData } from "../../../store/newBookingSlice"
 
 export function SelectScheduleForm({handleNextStep}) { 
@@ -11,7 +11,16 @@ export function SelectScheduleForm({handleNextStep}) {
     const [isFormFilled, setIsFormFilled] = useState(false)
     const { formDataOne, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
     const dispatch = useDispatch()
-    
+    const { formData } = useSelector(state=>state.newBooking)
+
+    // Open equipment checkbox if rent is 'yes'
+    useEffect(()=>{
+        if(formData.rent === 'yes'){
+            setIsRent(true)
+        }
+    },[])
+
+    // Disable the button if the form is not filled
     useEffect(()=>{
         if(validateFormData()) {
             setIsFormFilled(true)
@@ -38,6 +47,7 @@ export function SelectScheduleForm({handleNextStep}) {
                 name="bookingDate"
                 options={dateOptions}
                 label="Select Date"
+                defaultValue={formData.bookingDate}
             />
             {/* Select booking hour */}
             <SelectForm
@@ -45,6 +55,7 @@ export function SelectScheduleForm({handleNextStep}) {
                 name="bookingHour" 
                 options={hourOptions}
                 label="Select Hour"
+                defaultValue={formData.bookingHour}
             />
             
             {/* Rent racket or shuttlecock */}
@@ -57,6 +68,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     value="yes"
                     onClick={()=>setIsRent(true)}
                     onChange={handleRent}
+                    defaultChecked={formData.rent === 'yes'}
                     className="border-primary-dark dark:border-white"
                 />
                 <Radio 
@@ -66,6 +78,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     value="no"
                     onClick={()=>setIsRent(false)}
                     onChange={handleRent}
+                    defaultChecked={formData.rent === 'no'}
                     className="border-primary-dark dark:border-white"
                 />
             </div>
@@ -80,6 +93,7 @@ export function SelectScheduleForm({handleNextStep}) {
                             name="racket"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
+                            defaultChecked={formData.racket === 'yes'}
                         />
                         <span className="p-3">Racket</span>
                         <svg className="absolute -top-3 -right-9 xsm:-right-1 -rotate-90 dark:stroke-white" width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +106,7 @@ export function SelectScheduleForm({handleNextStep}) {
                             name="shuttlecock"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
+                            defaultChecked={formData.shuttlecock === 'yes'}
                         />
                         <span className="p-3">Shuttlecock</span>
                         <svg className="absolute -top-2 -right-7 xsm:right-3 rotate-180 stroke-[.15rem] dark:stroke-white" width="90" height="100" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
