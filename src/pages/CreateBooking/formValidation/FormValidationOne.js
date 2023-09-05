@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function FormValidationOne() {
+    const [equipmentData, setEquipmentData] = useState({})
     const [formData, setFormData] = useState({
         bookingDate: '',
         bookingHour: '',
         rent: '',
-        racket: 'no',
-        shuttlecock: 'no'
+        racket: '',
+        shuttlecock: ''
     })
 
-    // Store the input data into formData state
+    // For handling bookingData and bookingHour input
     function handleChange(event) {
         const {name, value} = event.target
 
@@ -21,7 +22,65 @@ export function FormValidationOne() {
         })
     }
 
-    // Validate the form data
+    // For handling radio button (rent)
+    function handleRent(event) {
+        const rent = event.target.value
+        let equipment = {}
+
+        // If user click 'No', set the equipment to empty
+        if(rent === 'no') {
+            equipment = {
+                racket: '',
+                shuttlecock: ''
+            }
+        }
+
+        // Store rent and equipment in formData state
+        if(rent !== '') {
+            setFormData((prevFormData)=>{
+                return {
+                    ...prevFormData,
+                    rent: rent,
+                    ...equipment
+                }
+            })
+        }
+    }
+
+    // If user click 'Yes' on radio button (rent), 
+    // set the equipment to equipmentData from checkbox (equipment)
+    useEffect(()=>{
+        if(formData.rent === 'yes') {
+            setFormData((prevFormData)=>{
+                return {
+                    ...prevFormData,
+                    ...equipmentData
+                }
+            })
+        }
+    },[equipmentData, formData.rent])
+
+
+    // For handling checkbox (equipment), get checkbox value
+    function handleEquipment(event) {
+        const {name, checked} = event.target
+        let value = ''
+
+        // If the checkbox is checked, set the value to 'yes'
+        if(checked) {
+            value = 'yes'
+        }
+
+        // Store the checkbox values in equipmentData state
+        setEquipmentData((prevEquipmentData)=>{
+            return {
+                ...prevEquipmentData,
+                [name]: value
+            }
+        })
+    }
+
+    // For validating the form data
     function validateFormData() {
         let isValid = true
         
@@ -38,10 +97,7 @@ export function FormValidationOne() {
         // rent
         if(formData.rent === '') {
             isValid = false
-        }
-
-        // the equipment
-        if(formData.rent === 'yes') {
+        } else if(formData.rent === 'yes') {
             // racket and/or shuttlecock must be filled
             if(formData.racket === '' && formData.shuttlecock === '') {
                 isValid = false
@@ -54,6 +110,8 @@ export function FormValidationOne() {
     return {
         formData,
         handleChange,
+        handleRent,
+        handleEquipment,
         validateFormData
     }
 }

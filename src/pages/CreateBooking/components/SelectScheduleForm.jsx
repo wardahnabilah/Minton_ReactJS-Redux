@@ -9,39 +9,25 @@ import { addNewData } from "../../../store/newBookingSlice"
 export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState(false)
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const { formData, handleChange, validateFormData } = FormValidationOne()
+    const { formData, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
     const dispatch = useDispatch()
     
     useEffect(()=>{
-        let filled = true
-        
-        for(const key in formData) {
-            if(formData[key] === '') {
-                filled = false
-            }
-        }
-
-        if(filled) {
+        if(validateFormData()) {
             setIsFormFilled(true)
-        }
-    },[formData])
+        } else {
+            setIsFormFilled(false)
+        } 
+    },[formData, validateFormData])
 
     function handleForm(event) {
         event.preventDefault()
 
         if(validateFormData()) {
             dispatch(addNewData(formData))
+
+            handleNextStep()
         }
-
-        handleNextStep()
-    }
-
-    // Rent radio button
-    function handleRent(event) {
-        const radioBtnValue = event.target.value 
-        
-        setIsRent(radioBtnValue)
-        handleChange(event)
     }
     
     return (
@@ -69,6 +55,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     label={<span className="text-primary-dark dark:text-white">Yes</span>} 
                     icon={<CircleIcon />}
                     value="yes"
+                    onClick={()=>setIsRent(true)}
                     onChange={handleRent}
                     className="border-primary-dark dark:border-white"
                 />
@@ -77,20 +64,20 @@ export function SelectScheduleForm({handleNextStep}) {
                     label={<span className="text-primary-dark dark:text-white">No</span>} 
                     icon={<CircleIcon />}
                     value="no"
+                    onClick={()=>setIsRent(false)}
                     onChange={handleRent}
                     className="border-primary-dark dark:border-white"
                 />
             </div>
 
             {/* Select rental equipment */}
-            <div className={isRent === 'yes' ? '' : 'hidden'}>
+            <div className={isRent ? '' : 'hidden'}>
                 <label className="block text-xl mb-6">Select the equipment you need:</label>
                 <div className="flex flex-col gap-4">
                     <label className="relative flex items-center w-10/12 h-16 mx-auto px-4 overflow-hidden border-2 border-primary-dark/80 dark:border-white/90 rounded-2xl">
                         <Checkbox
-                            onChange={handleChange} 
+                            onChange={handleEquipment} 
                             name="racket"
-                            value="yes"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
                         />
@@ -101,9 +88,8 @@ export function SelectScheduleForm({handleNextStep}) {
                     </label>
                     <label className="relative flex items-center w-10/12 h-16 mx-auto px-4 overflow-hidden border-2 border-primary-dark/80 dark:border-white/90 rounded-2xl">
                         <Checkbox
-                            onChange={handleChange} 
+                            onChange={handleEquipment} 
                             name="shuttlecock"
-                            value="yes"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
                         />
