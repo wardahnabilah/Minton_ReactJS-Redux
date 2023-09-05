@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { StepProgresBar } from "./components/StepProgresBar"
 import { SelectScheduleForm } from "./components/SelectScheduleForm"
+import { FillIdentityForm } from "./components/FillIdentityForm"
 
 export function CreateBooking() {
     const [activeStep, setActiveStep] = useState(0)
@@ -22,6 +23,8 @@ export function CreateBooking() {
             {/* First Step - Select Schedule */}
             {activeStep === 0 && <SelectScheduleForm handleNextStep={handleNextStep}/>}
 
+            {/* Second Step - Fill Identity */}
+            {activeStep === 1 && <FillIdentityForm />}
         </section>       
     )
 }
