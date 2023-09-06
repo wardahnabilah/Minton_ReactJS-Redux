@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import './index.css'
 import { ThemeProvider } from '@material-tailwind/react';
+import { ScrollToTop } from './components/others/ScrollToTop';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
@@ -13,6 +14,7 @@ root.render(
         <Provider store={store}>
             <Router>
                 <ThemeProvider>
+                    <ScrollToTop />
                     <App />
                 </ThemeProvider>
             </Router>
