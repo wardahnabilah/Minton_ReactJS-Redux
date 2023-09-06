@@ -5,6 +5,7 @@ import { ButtonBtn } from "../../../components/elements/Buttons"
 import { FormValidationOne } from "../formValidation/FormValidationOne"
 import { useDispatch, useSelector } from "react-redux"
 import { addNewData } from "../../../store/newBookingSlice"
+import { useDocTitle } from "../../../hooks/useDocTitle"
 
 export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState(false)
@@ -12,6 +13,8 @@ export function SelectScheduleForm({handleNextStep}) {
     const { formDataOne, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
     const dispatch = useDispatch()
     const { formData } = useSelector(state=>state.newBooking)
+
+    useDocTitle('Step 1 - Select Schedule')
 
     // Open equipment checkbox if rent is 'yes'
     useEffect(()=>{

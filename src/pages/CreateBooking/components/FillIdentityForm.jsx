@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { addNewData, generateBookingID } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useDocTitle } from "../../../hooks/useDocTitle"
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
@@ -12,6 +13,8 @@ export function FillIdentityForm() {
     const dispatch = useDispatch()
     const { formData } = useSelector(state=>state.newBooking)
     const navigateTo = useNavigate()
+
+    useDocTitle('Step 2 - Fill Identity')
 
     // Disable the button if the form is not filled
     useEffect(()=>{

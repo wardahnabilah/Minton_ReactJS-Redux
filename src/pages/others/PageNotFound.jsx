@@ -1,6 +1,10 @@
 import { ButtonLink } from "../../components/elements/Buttons";
+import { useDocTitle } from "../../hooks/useDocTitle";
 
 export function PageNotFound() {
+    
+    useDocTitle('Page Not Found')
+    
     return (
         <div className="py-44 text-center">
             <p className="text-3xl md:text-5xl mb-3">Sorry</p>

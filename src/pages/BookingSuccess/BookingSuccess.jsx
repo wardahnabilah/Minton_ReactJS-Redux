@@ -1,9 +1,12 @@
 import { Card, CardBody, CardHeader, CardFooter } from "@material-tailwind/react"
 import { ButtonLink } from "../../components/elements/Buttons"
 import { useSelector } from "react-redux"
+import { useDocTitle } from "../../hooks/useDocTitle"
 
 export function BookingSuccess() {
     const { formData } = useSelector(state=>state.newBooking)
+
+    useDocTitle('Booking Success')
     
     return (
         <section className="py-28">

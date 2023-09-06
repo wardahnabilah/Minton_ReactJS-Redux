@@ -1,7 +1,11 @@
 import { CardBody, IconButton, Tooltip } from "@material-tailwind/react"
 import { DetailItem } from "../../components/elements/DetailItem"
+import { useDocTitle } from "../../hooks/useDocTitle"
 
 export function BookingDetail() {
+    
+    useDocTitle('Booking Detail')
+    
     const bookingSchedule = (
         <>
             <div className="flex gap-2 items-center">

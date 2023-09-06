@@ -1,6 +1,10 @@
+import { useDocTitle } from "../../hooks/useDocTitle";
 import { ScheduleCard } from "./components/ScheduleCard";
 
 export function BookingSchedule() {
+    
+    useDocTitle('Booking Schedule')
+    
     return (
         <section className="py-32">
             <h1 className="text-2.5xl text-center font-extrabold uppercase tracking-wider">Booking Schedule</h1>

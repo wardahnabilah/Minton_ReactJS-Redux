@@ -1,6 +1,10 @@
 import { ButtonLink } from "../../components/elements/Buttons";
+import { useDocTitle } from "../../hooks/useDocTitle";
 
 export function Homepage() {
+    
+    useDocTitle('Minton | Unleash your badminton passion')
+    
     return (
         <section className="h-screen bg-bgHero bg-cover ">
             <div className="absolute top-40 md:top-48 inset-x-0 mx-auto text-center text-white">
