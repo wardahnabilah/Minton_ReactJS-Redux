@@ -1,21 +1,34 @@
 import { CardBody, IconButton, Tooltip } from "@material-tailwind/react"
 import { DetailItem } from "../../components/elements/DetailItem"
 import { useDocTitle } from "../../hooks/useDocTitle"
+import { useSelector } from "react-redux"
 
 export function BookingDetail() {
-    
+    const { currentBookingData } = useSelector(state=>state.newBooking) 
+
     useDocTitle('Booking Detail')
     
     const bookingSchedule = (
         <>
             <div className="flex gap-2 items-center">
                 <CalendarIcon />
-                <span>10 September 2023</span>
+                <span>{currentBookingData.bookingDate}</span>
             </div>
             <div className="flex gap-2 items-center">
                 <ClockIcon />
-                <span>09.00-10.00</span>
+                <span>{currentBookingData.bookingHour}</span>
             </div>
+        </>
+    )
+
+    const rentedEquipment = (
+        <>
+            {currentBookingData.rent === 'yes' ?  <div>
+                                            {currentBookingData.racket === 'yes' && 'Racket'}
+                                            {(currentBookingData.racket ===  'yes' && currentBookingData.shuttlecock === 'yes') && ' , ' }
+                                            {currentBookingData.shuttlecock === 'yes' && 'Shuttlecock'}
+                                        </div>
+                                     : 'Not renting'}
         </>
     )
 
@@ -46,21 +59,25 @@ export function BookingDetail() {
                 <CardBody>
                     <DetailItem 
                         label="Booked by"
-                        value="Alex Johnson"    
+                        value={currentBookingData.customerName}    
                     />
                     <DetailItem 
                         label="WA number"
-                        value="081231231231"  
+                        value={currentBookingData.customerWANumber} 
                     />
                     <DetailItem 
                         label="Schedule"
                         value={bookingSchedule}   
                     />
                     <DetailItem 
+                        label="Rented Equipments"
+                        value={rentedEquipment}   
+                    />
+                    <DetailItem 
                         label="Booking ID"  
                     />
                     <div className="mt-[4.3rem] md:mt-[4.5rem] py-3 text-2xl text-center border-2 border-primary-dark dark:border-white rounded-full">
-                        #123456
+                        {currentBookingData.bookingID}
                     </div>
                 </CardBody>
             </div>

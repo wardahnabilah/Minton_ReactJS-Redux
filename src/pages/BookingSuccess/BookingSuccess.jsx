@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { useDocTitle } from "../../hooks/useDocTitle"
 
 export function BookingSuccess() {
-    const { formData } = useSelector(state=>state.newBooking)
+    const { currentBookingData } = useSelector(state=>state.newBooking)
 
     useDocTitle('Booking Success')
     
@@ -26,13 +26,13 @@ export function BookingSuccess() {
                     <div>
                         <p className="mb-4">Your booking ID:</p>
                         <div className="py-3 text-2xl text-center border-2 border-primary-dark/50 dark:border-white rounded-full">
-                            {formData.bookingID}
+                            {currentBookingData.bookingID}
                         </div>
                     </div>
                     <p className="text-center">Show this booking ID to the staff upon arrival at Minton Court</p>
                 </CardBody>
                 <CardFooter className="grid px-8 md:px-16">
-                    <ButtonLink pathName={`/bookings/${formData.bookingID}`}>See Booking Detail</ButtonLink>
+                    <ButtonLink pathName={`/bookings/${currentBookingData.bookingID}`}>See Booking Detail</ButtonLink>
                 </CardFooter>
             </Card>
         </section>
