@@ -11,7 +11,8 @@ const newBookingSlice = createSlice({
             shuttlecock: '',
             customerName: '',
             customerWANumber: ''
-        }
+        },
+        currentBookingData: {}
     },
     reducers: {
         addNewData: (state, action) => {
@@ -19,6 +20,11 @@ const newBookingSlice = createSlice({
             
             state.formData = {
                 ...state.formData,
+                ...newData
+            }
+
+            state.currentBookingData = {
+                ...state.currentBookingData,
                 ...newData
             }
         },
@@ -37,10 +43,10 @@ const newBookingSlice = createSlice({
         },
 
         generateBookingID: (state, action) => {
-            const name = state.formData.customerName.trim(' ').split(' ')[0]
+            const name = state.currentBookingData.customerName.trim(' ').split(' ')[0]
             const randomNumber = String(Math.round(Math.random() * 1000) + 1000)
 
-            state.formData.bookingID = name + randomNumber
+            state.currentBookingData.bookingID = name + randomNumber
         }
     }
 })
