@@ -23,6 +23,19 @@ const newBookingSlice = createSlice({
             }
         },
 
+        resetFormData: (state) => {
+            state.formData = {
+                ...state.formData,
+                bookingDate: '',
+                bookingHour: '',
+                rent: '',
+                racket: '',
+                shuttlecock: '',
+                customerName: '',
+                customerWANumber: ''
+            }
+        },
+
         generateBookingID: (state, action) => {
             const name = state.formData.customerName.trim(' ').split(' ')[0]
             const randomNumber = String(Math.round(Math.random() * 1000) + 1000)
@@ -32,5 +45,5 @@ const newBookingSlice = createSlice({
     }
 })
 
-export const { addNewData, generateBookingID } = newBookingSlice.actions
+export const { addNewData, resetFormData, generateBookingID } = newBookingSlice.actions
 export const newBookingReducer = newBookingSlice.reducer

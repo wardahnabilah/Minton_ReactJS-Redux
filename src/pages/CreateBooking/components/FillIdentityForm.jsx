@@ -2,7 +2,7 @@ import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
 import { FormValidationTwo } from "../formValidation/FormValidationTwo";
 import { useEffect, useState } from "react";
-import { addNewData, generateBookingID } from "../../../store/newBookingSlice";
+import { addNewData, generateBookingID, resetFormData } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
@@ -36,6 +36,9 @@ export function FillIdentityForm() {
 
             dispatch(updateSchedule({bookingHour: formData.bookingHour, bookingDate: formData.bookingDate}))
 
+            // Reset the form to be empty
+            dispatch(resetFormData())
+
             navigateTo('/booking-success')
         }
 
@@ -43,7 +46,6 @@ export function FillIdentityForm() {
 
     return (
         <form onSubmit={handleSubmit} className="w-9/12 max-w-sm mx-auto mt-10 text-lg grid gap-3">
-            {console.log(formData)}
             <InputForm
                 label="Your Name"
                 onChange={handleCustomerName}
