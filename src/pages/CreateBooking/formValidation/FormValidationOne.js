@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 
 export function FormValidationOne() {
     const { formData } = useSelector((state)=>state.newBooking)
-    const [equipmentData, setEquipmentData] = useState({})
+    const [equipmentData, setEquipmentData] = useState({
+        racket: formData.racket,
+        shuttlecock: formData.shuttlecock
+    })
     const [formDataOne, setFormDataOne] = useState({
         bookingDate: formData.bookingDate,
         bookingHour: formData.bookingHour,
@@ -12,8 +15,8 @@ export function FormValidationOne() {
         shuttlecock: formData.shuttlecock
     })
 
-    // For handling bookingData and bookingHour input
-    function handleChange(event) {
+    // For handling bookingDate and bookingHour select input
+    function handleSelectChange(event) {
         const {name, value} = event.target
 
         setFormDataOne((prevFormData)=>{
@@ -27,30 +30,19 @@ export function FormValidationOne() {
     // For handling radio button (rent)
     function handleRent(event) {
         const rent = event.target.value
-        let equipment = {}
 
-        // If user click 'No', set the equipment to empty
-        if(rent === 'no') {
-            equipment = {
-                racket: '',
-                shuttlecock: ''
-            }
-        }
-
-        // Store rent and equipment in formData state
+        // Store rent in formDataOne state
         if(rent !== '') {
             setFormDataOne((prevFormData)=>{
                 return {
                     ...prevFormData,
-                    rent: rent,
-                    ...equipment
+                    rent: rent
                 }
             })
         }
     }
 
-    // If user click 'Yes' on radio button (rent), 
-    // set the equipment to equipmentData from checkbox (equipment)
+    // Store equipmentData in formDataOne
     useEffect(()=>{
         if(formDataOne.rent === 'yes') {
             setFormDataOne((prevFormData)=>{
@@ -60,8 +52,16 @@ export function FormValidationOne() {
                 }
             })
         }
-    },[equipmentData, formDataOne.rent])
-
+        else if(formDataOne.rent === 'no') {
+            setFormDataOne((prevFormData)=>{
+                return {
+                    ...prevFormData,
+                    racket: '',
+                    shuttlecock: ''
+                }
+            })
+        }
+    },[formDataOne.rent, equipmentData])
 
     // For handling checkbox (equipment), get checkbox value
     function handleEquipment(event) {
@@ -82,7 +82,7 @@ export function FormValidationOne() {
         })
     }
 
-    // For validating the form data
+    // Check whether every input is empty or not
     function validateFormData() {
         let isValid = true
         
@@ -111,7 +111,7 @@ export function FormValidationOne() {
 
     return {
         formDataOne,
-        handleChange,
+        handleSelectChange,
         handleRent,
         handleEquipment,
         validateFormData

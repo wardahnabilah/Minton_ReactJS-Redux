@@ -10,9 +10,8 @@ import { useDocTitle } from "../../../hooks/useDocTitle"
 export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState(false)
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const { formDataOne, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
+    const { formDataOne, handleSelectChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
     const dispatch = useDispatch()
-    const { formData } = useSelector(state=>state.newBooking)
     const { scheduleList } = useSelector(state=>state.bookingSchedule)
     const [dateOptions, setDateOptions] = useState([]) 
     const [hourOptions, setHourOptions] = useState([])
@@ -21,7 +20,7 @@ export function SelectScheduleForm({handleNextStep}) {
 
     // Open equipment checkbox if rent is 'yes'
     useEffect(()=>{
-        if(formData.rent === 'yes'){
+        if(formDataOne.rent === 'yes'){
             setIsRent(true)
         }
     },[])
@@ -40,7 +39,7 @@ export function SelectScheduleForm({handleNextStep}) {
         const dates = scheduleList.map(schedule => schedule.date)
         
         setDateOptions(dates)
-    },[scheduleList])
+    },[])
 
     // Get the hour options
     useEffect(()=>{
@@ -68,19 +67,19 @@ export function SelectScheduleForm({handleNextStep}) {
         <form onSubmit={handleForm} id="firstStepForm" className="flex flex-col gap-5 w-9/12 max-w-sm mx-auto mt-10 text-lg">
             {/* Select booking date */}
             <SelectForm
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 name="bookingDate"
                 options={dateOptions}
                 label="Select Date"
-                defaultValue={formData.bookingDate}
+                value={formDataOne.bookingDate}
             />
             {/* Select booking hour */}
             <SelectForm
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 name="bookingHour" 
                 options={hourOptions}
                 label="Select Hour"
-                defaultValue={formData.bookingHour}
+                value={formDataOne.bookingHour}
             />
             
             {/* Rent racket or shuttlecock */}
@@ -93,7 +92,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     value="yes"
                     onClick={()=>setIsRent(true)}
                     onChange={handleRent}
-                    defaultChecked={formData.rent === 'yes'}
+                    defaultChecked={formDataOne.rent === 'yes'}
                     className="border-primary-dark dark:border-white"
                 />
                 <Radio 
@@ -103,7 +102,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     value="no"
                     onClick={()=>setIsRent(false)}
                     onChange={handleRent}
-                    defaultChecked={formData.rent === 'no'}
+                    defaultChecked={formDataOne.rent === 'no'}
                     className="border-primary-dark dark:border-white"
                 />
             </div>
@@ -118,7 +117,7 @@ export function SelectScheduleForm({handleNextStep}) {
                             name="racket"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
-                            defaultChecked={formData.racket === 'yes'}
+                            defaultChecked={formDataOne.racket === 'yes'}
                         />
                         <span className="p-3">Racket</span>
                         <svg className="absolute -top-3 -right-9 xsm:-right-1 -rotate-90 dark:stroke-white" width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -131,7 +130,7 @@ export function SelectScheduleForm({handleNextStep}) {
                             name="shuttlecock"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
-                            defaultChecked={formData.shuttlecock === 'yes'}
+                            defaultChecked={formDataOne.shuttlecock === 'yes'}
                         />
                         <span className="p-3">Shuttlecock</span>
                         <svg className="absolute -top-2 -right-7 xsm:right-3 rotate-180 stroke-[.15rem] dark:stroke-white" width="90" height="100" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
