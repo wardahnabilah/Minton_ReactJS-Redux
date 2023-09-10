@@ -13,6 +13,9 @@ export function SelectScheduleForm({handleNextStep}) {
     const { formDataOne, handleChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
     const dispatch = useDispatch()
     const { formData } = useSelector(state=>state.newBooking)
+    const { scheduleList } = useSelector(state=>state.bookingSchedule)
+    const [dateOptions, setDateOptions] = useState([]) 
+    const [hourOptions, setHourOptions] = useState([])
 
     useDocTitle('Step 1 - Select Schedule')
 
@@ -31,6 +34,25 @@ export function SelectScheduleForm({handleNextStep}) {
             setIsFormFilled(false)
         } 
     },[formDataOne, validateFormData])
+
+    // Get the date options from scheduleList slice
+    useEffect(()=>{
+        const dates = scheduleList.map(schedule => schedule.date)
+        
+        setDateOptions(dates)
+    },[scheduleList])
+
+    // Get the hour options
+    useEffect(()=>{
+        const schedule = scheduleList.find(schedule => schedule.date === formDataOne.bookingDate)
+
+        if(schedule) {
+            const hourList = schedule.hourList.map(hourListItem => hourListItem)
+
+            setHourOptions(hourList)
+        }
+        
+    },[formDataOne.bookingDate, scheduleList])
 
     function handleForm(event) {
         event.preventDefault()
@@ -123,21 +145,6 @@ export function SelectScheduleForm({handleNextStep}) {
         </form>
     )
 }
-
-// Dummy data date
-const dateOptions = [
-    '10 September 2023',
-    '11 September 2023',
-    '12 September 2023',
-    '13 September 2023'
-]
-
-// Dummy data hour
-const hourOptions = [
-    '08:00 - 09:00',
-    '16:00 - 17:00',
-    '18:00 - 19:00'
-]
 
 // Radio button icon
 function CircleIcon() {

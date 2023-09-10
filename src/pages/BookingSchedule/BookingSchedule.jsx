@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDocTitle } from "../../hooks/useDocTitle";
 import { ScheduleCard } from "./components/ScheduleCard";
+import { useSelector } from "react-redux";
 
 export function BookingSchedule() {
     const [selectedDate, setSelectedDate] = useState('') 
+    const [dateOptions, setDateOptions] = useState([])
+    const { scheduleList } = useSelector(state=>state.bookingSchedule)
     
     useDocTitle('Booking Schedule')
+
+    // Get the date options from bookingSchedule slice
+    useEffect(()=>{
+        const dates = scheduleList.map(schedule => schedule.date)
+        
+        setDateOptions(dates)
+    },[scheduleList])
     
     // Handle select date
     function handleSelectedDate(event) {
@@ -31,11 +41,3 @@ export function BookingSchedule() {
         </section>       
     )
 }
-
-// Dummy data date
-const dateOptions = [
-    '10 September 2023',
-    '11 September 2023',
-    '12 September 2023',
-    '13 September 2023'
-]

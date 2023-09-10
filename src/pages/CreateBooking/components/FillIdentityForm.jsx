@@ -6,6 +6,7 @@ import { addNewData, generateBookingID } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
+import { updateSchedule } from "../../../store/bookingScheduleSlice";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
@@ -33,13 +34,16 @@ export function FillIdentityForm() {
             dispatch(addNewData(formDataTwo))
             dispatch(generateBookingID())
 
+            dispatch(updateSchedule({bookingHour: formData.bookingHour, bookingDate: formData.bookingDate}))
+
             navigateTo('/booking-success')
         }
-        
+
     }
 
     return (
         <form onSubmit={handleSubmit} className="w-9/12 max-w-sm mx-auto mt-10 text-lg grid gap-3">
+            {console.log(formData)}
             <InputForm
                 label="Your Name"
                 onChange={handleCustomerName}
