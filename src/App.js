@@ -8,6 +8,7 @@ import { BookingSuccess } from "./pages/BookingSuccess/BookingSuccess"
 import { BookingDetail } from "./pages/BookingDetail/BookingDetail"
 import { PageNotFound } from "./pages/others/PageNotFound"
 import { EditBooking } from "./pages/EditBooking/EditBooking"
+import { ProtectedRoute } from "./components/others/ProtectedRoute"
 
 export function App() {
     return(
@@ -18,9 +19,9 @@ export function App() {
                     <Route path="/" element={<Homepage />} />
                     <Route path="/create-booking" element={<CreateBooking />} />
                     <Route path="/booking-schedule" element={<BookingSchedule />} />
-                    <Route path="/booking-success" element={<BookingSuccess />} />
-                    <Route path="/bookings/:id" element={<BookingDetail />} />
-                    <Route path="/bookings/:id/edit" element={<EditBooking />} />
+                    <Route path="/booking-success" element={<ProtectedRoute><BookingSuccess /></ProtectedRoute>} />
+                    <Route path="/bookings/:id" element={<ProtectedRoute><BookingDetail /></ProtectedRoute>} />
+                    <Route path="/bookings/:id/edit" element={<ProtectedRoute><EditBooking /></ProtectedRoute>} />
                     <Route path="/*" element={<PageNotFound />} />
                 </Routes>
             </main>
