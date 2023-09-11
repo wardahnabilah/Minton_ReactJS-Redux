@@ -1,10 +1,14 @@
 import { CardBody, IconButton, Tooltip } from "@material-tailwind/react"
 import { DetailItem } from "../../components/elements/DetailItem"
 import { useDocTitle } from "../../hooks/useDocTitle"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { cancelSchedule } from "../../store/bookingScheduleSlice"
 
 export function BookingDetail() {
     const { currentBookingData } = useSelector(state=>state.newBooking) 
+    const navigateTo = useNavigate()
+    const dispatch = useDispatch()
 
     useDocTitle('Booking Detail')
     
@@ -32,10 +36,17 @@ export function BookingDetail() {
         </>
     )
 
+    function handleEditClick() {
+        dispatch(cancelSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
+
+        navigateTo(`/bookings/${currentBookingData.bookingID}/edit`)
+    }
+
     return (
         <section className="py-28">
             <h1 className="mb-12 text-2.5xl text-center font-extrabold uppercase tracking-wider">Booking Detail</h1>
             <div className="w-11/12 relative max-w-[26rem] mb-7 mx-auto px-6 md:px-8 pt-[2.5rem] pb-6 rounded-2xl border-2 border-accent-lightpurple dark:border-accent-lightpurple/50">
+                {/* Edit and Delete buttons */}
                 <div className="absolute top-4 right-4">
                     <div className="inline-block">
                         <Tooltip content="Cancel Booking">
@@ -46,7 +57,7 @@ export function BookingDetail() {
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div className="inline-block">
+                    <div onClick={handleEditClick} className="inline-block">
                         <Tooltip content="Edit Booking">
                             <IconButton variant="text">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#39989B" className="bi bi-pencil-fill" viewBox="0 0 16 16">

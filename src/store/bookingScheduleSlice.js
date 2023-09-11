@@ -87,9 +87,23 @@ const bookingScheduleSlice = createSlice({
                     })
                 }
             })
+        },
+
+        cancelSchedule: (state, action) => {
+            const { bookingDate, bookingHour} = action.payload
+
+            state.scheduleList.forEach(schedule => {
+                if(schedule.date === bookingDate) {
+                    schedule.hourList.forEach(hourListItem => {
+                        if(hourListItem.hour === bookingHour) {
+                            hourListItem.isBooked = false
+                        }
+                    })
+                }
+            })
         }
     }
 })
 
-export const { updateSchedule } = bookingScheduleSlice.actions
+export const { updateSchedule, cancelSchedule } = bookingScheduleSlice.actions
 export const bookingScheduleReducer = bookingScheduleSlice.reducer

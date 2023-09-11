@@ -7,6 +7,7 @@ import { BookingSchedule } from "./pages/BookingSchedule/BookingSchedule"
 import { BookingSuccess } from "./pages/BookingSuccess/BookingSuccess"
 import { BookingDetail } from "./pages/BookingDetail/BookingDetail"
 import { PageNotFound } from "./pages/others/PageNotFound"
+import { EditBooking } from "./pages/EditBooking/EditBooking"
 
 export function App() {
     return(
@@ -19,6 +20,7 @@ export function App() {
                     <Route path="/booking-schedule" element={<BookingSchedule />} />
                     <Route path="/booking-success" element={<BookingSuccess />} />
                     <Route path="/bookings/:id" element={<BookingDetail />} />
+                    <Route path="/bookings/:id/edit" element={<EditBooking />} />
                     <Route path="/*" element={<PageNotFound />} />
                 </Routes>
             </main>

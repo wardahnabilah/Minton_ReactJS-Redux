@@ -12,7 +12,15 @@ const newBookingSlice = createSlice({
             customerName: '',
             customerWANumber: ''
         },
-        currentBookingData: {}
+        currentBookingData: {
+            bookingDate: '',
+            bookingHour: '',
+            rent: '',
+            racket: '',
+            shuttlecock: '',
+            customerName: '',
+            customerWANumber: ''
+        }
     },
     reducers: {
         addNewData: (state, action) => {
@@ -26,6 +34,15 @@ const newBookingSlice = createSlice({
             state.currentBookingData = {
                 ...state.currentBookingData,
                 ...newData
+            }
+        },
+
+        updateCurrentBooking: (state, action) => {
+            const updatedData = action.payload
+
+            state.currentBookingData = {
+                ...state.currentBookingData,
+                ...updatedData
             }
         },
 
@@ -51,5 +68,5 @@ const newBookingSlice = createSlice({
     }
 })
 
-export const { addNewData, resetFormData, generateBookingID } = newBookingSlice.actions
+export const { addNewData, updateCurrentBooking, resetFormData, generateBookingID } = newBookingSlice.actions
 export const newBookingReducer = newBookingSlice.reducer
