@@ -33,7 +33,6 @@ export function FillIdentityForm() {
 
         if(validateFormData()) {
             dispatch(updateCurrentBooking(formDataTwo))
-            dispatch(generateBookingID())
 
             dispatch(updateSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
 
@@ -45,7 +44,7 @@ export function FillIdentityForm() {
                 autoClose: 3000
             })
 
-            navigateTo('/booking-success')
+            navigateTo(`/bookings/${currentBookingData.bookingID}`)
         }
 
     }
