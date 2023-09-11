@@ -7,6 +7,8 @@ import { store } from './store/store';
 import './index.css'
 import { ThemeProvider } from '@material-tailwind/react';
 import { ScrollToTop } from './components/others/ScrollToTop';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +17,7 @@ root.render(
             <Router>
                 <ThemeProvider>
                     <ScrollToTop />
+                    <ToastContainer />
                     <App />
                 </ThemeProvider>
             </Router>

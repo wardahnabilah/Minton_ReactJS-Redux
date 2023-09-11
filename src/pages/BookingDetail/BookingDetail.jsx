@@ -4,6 +4,7 @@ import { useDocTitle } from "../../hooks/useDocTitle"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { cancelSchedule } from "../../store/bookingScheduleSlice"
+import { toast } from "react-toastify"
 
 export function BookingDetail() {
     const { currentBookingData } = useSelector(state=>state.newBooking) 
@@ -45,6 +46,11 @@ export function BookingDetail() {
     function handleDeleteClick() {
         dispatch(cancelSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
 
+        toast.success('Booking cancelled', {
+            position: 'top-center',
+            autoClose: 3000
+        })
+        
         navigateTo(`/booking-schedule`)
     }
 

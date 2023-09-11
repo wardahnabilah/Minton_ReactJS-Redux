@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
 import { updateSchedule } from "../../../store/bookingScheduleSlice";
+import { toast } from "react-toastify";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
@@ -38,6 +39,11 @@ export function FillIdentityForm() {
 
             // Reset the form to be empty
             dispatch(resetFormData())
+
+            toast.success('Booking Successfully Edited!', {
+                position: 'top-center',
+                autoClose: 3000
+            })
 
             navigateTo('/booking-success')
         }
