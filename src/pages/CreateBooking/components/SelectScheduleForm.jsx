@@ -80,6 +80,7 @@ export function SelectScheduleForm({handleNextStep}) {
                 options={hourOptions}
                 label="Select Hour"
                 value={formDataOne.bookingHour}
+                disabled={formDataOne.bookingDate === '' ? true : false}
             />
             
             {/* Rent racket or shuttlecock */}

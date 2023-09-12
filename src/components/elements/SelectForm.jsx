@@ -1,7 +1,7 @@
-export function SelectForm({name, options, label, value, onChange, formData}) {
+export function SelectForm({name, options, label, value, onChange, disabled}) {
     return (
         <div className="relative">
-            <select onChange={onChange} name={name} value={value} className="w-full rounded-2xl px-7 py-2 hover:cursor-pointer text-primary-dark  bg-primary-light/60 dark:bg-accent-grey outline-none focus:outline-accent-yellow appearance-none">
+            <select disabled={disabled} onChange={onChange} name={name} value={value} className="w-full rounded-2xl px-7 py-2 hover:cursor-pointer disabled:cursor-auto text-primary-dark  bg-primary-light/60 dark:bg-accent-grey outline-none focus:outline-accent-yellow appearance-none">
                 <option value="" disabled>{label}</option>
                 { options.map((option, index) => {
                     return <option 
