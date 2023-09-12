@@ -1,11 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Generate schedule dates 
+function scheduleDate(n) {
+    const date = new Date()
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
+
+    date.setDate(date.getDate() + n)
+    
+    return date.toLocaleDateString('en-GB', options)
+}
+
+
 const bookingScheduleSlice = createSlice({
     name: 'bookingSchedule',
     initialState: {
         scheduleList: [
             {
-                date: '10 September 2023',
+                date: scheduleDate(1),
                 hourList: [
                     {
                         hour: '08:00 - 09:00',
@@ -22,7 +33,7 @@ const bookingScheduleSlice = createSlice({
                 ]
             },
             {
-                date: '11 September 2023',
+                date: scheduleDate(2),
                 hourList: [
                     {
                         hour: '08:00 - 09:00',
@@ -39,15 +50,15 @@ const bookingScheduleSlice = createSlice({
                 ]
             },
             {
-                date: '12 September 2023',
+                date: scheduleDate(3),
                 hourList: [
                     {
                         hour: '08:00 - 09:00',
-                        isBooked: true
+                        isBooked: false
                     },
                     {
                         hour: '16:00 - 17:00',
-                        isBooked: true
+                        isBooked: false
                     },
                     {
                         hour: '18:00 - 19:00',
@@ -56,7 +67,7 @@ const bookingScheduleSlice = createSlice({
                 ]
             },
             {
-                date: '13 September 2023',
+                date: scheduleDate(4),
                 hourList: [
                     {
                         hour: '08:00 - 09:00',
