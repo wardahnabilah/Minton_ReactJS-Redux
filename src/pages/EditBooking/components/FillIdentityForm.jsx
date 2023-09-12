@@ -2,7 +2,7 @@ import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
 import { FormValidationTwo } from "../formValidation/FormValidationTwo";
 import { useEffect, useState } from "react";
-import { generateBookingID, resetFormData, updateCurrentBooking } from "../../../store/newBookingSlice";
+import { resetFormData, updateCurrentBooking } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"

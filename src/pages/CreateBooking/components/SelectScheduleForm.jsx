@@ -23,7 +23,7 @@ export function SelectScheduleForm({handleNextStep}) {
         if(formDataOne.rent === 'yes'){
             setIsRent(true)
         }
-    },[])
+    },[formDataOne.rent])
 
     // Disable the button if the form is not filled
     useEffect(()=>{
@@ -39,7 +39,7 @@ export function SelectScheduleForm({handleNextStep}) {
         const dates = scheduleList.map(schedule => schedule.date)
         
         setDateOptions(dates)
-    },[])
+    },[scheduleList])
 
     // Get the hour options
     useEffect(()=>{

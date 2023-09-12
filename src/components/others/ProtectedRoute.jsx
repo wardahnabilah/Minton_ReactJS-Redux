@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -17,6 +17,8 @@ export function ProtectedRoute({children}) {
             
             navigateTo('/')
         }
+
+    // eslint-disable-next-line
     }, [currentBookingData.bookingID])
 
     return (
