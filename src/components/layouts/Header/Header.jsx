@@ -12,6 +12,7 @@ export function Header() {
     const location = useLocation()
     const dispatch = useDispatch()
     const { isDark } = useSelector(state=>state.theme)
+    const pathname = useLocation().pathname
 
     // Dark theme
     useEffect(()=>{
@@ -51,7 +52,7 @@ export function Header() {
                     </span>
                 </div>
             </NavItem>
-            <NavItem>
+            <NavItem className={pathname === '/create-booking' ? 'hidden' : ''}>
                 <ButtonLinkSmall pathName="/create-booking">Booking Now</ButtonLinkSmall>
             </NavItem>
         </ul>
