@@ -5,11 +5,13 @@ export function FormValidationTwo() {
     const { formData } = useSelector(state=>state.newBooking)
     const [errors, setErrors] = useState({
         customerName: '',
-        customerWANumber: ''
+        customerWANumber: '',
+        password: ''
     })
     const [formDataTwo, setFormDataTwo] = useState({
         customerName: formData.customerName,
-        customerWANumber: formData.customerWANumber
+        customerWANumber: formData.customerWANumber,
+        password: ''
     })
 
     // Handle customerName
@@ -93,6 +95,42 @@ export function FormValidationTwo() {
         }
     }
 
+    // Handle password
+    function handlePassword(event) {
+        const validPassword = /^.{6,}/g
+        const passwordInput = event.target.value
+
+        if(passwordInput === '') {
+            setErrors((errors)=>{
+                return {
+                    ...errors,
+                    password: 'This field is required'
+                }
+            })
+        } else if(!validPassword.test(passwordInput)) {
+            setErrors((errors)=>{
+                return {
+                    ...errors,
+                    password: 'Password must be at least 6 characters'
+                }
+            })
+        } else {
+            setFormDataTwo((prevFormData)=>{
+                return {
+                    ...prevFormData,
+                    password: passwordInput
+                }
+            })
+
+            setErrors((errors)=>{
+                return {
+                    ...errors,
+                    password: ''
+                }
+            })
+        }
+    } 
+
     function validateFormData() {
         let isValid = true
 
@@ -106,6 +144,11 @@ export function FormValidationTwo() {
             isValid = false
         }
 
+        // password
+        if(formDataTwo.password === '' || errors.password !== '') {
+            isValid = false
+        }
+
         return isValid
     }
 
@@ -114,6 +157,7 @@ export function FormValidationTwo() {
         validateFormData,
         handleCustomerName,
         handleCustomerWANumber,
+        handlePassword,
         errors
     }
 }

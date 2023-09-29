@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const {formDataTwo, errors, handleCustomerName, handleCustomerWANumber, validateFormData} = FormValidationTwo()
+    const {formDataTwo, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateFormData} = FormValidationTwo()
     const dispatch = useDispatch()
     const { formData } = useSelector(state=>state.newBooking)
     const navigateTo = useNavigate()
@@ -68,8 +68,15 @@ export function FillIdentityForm() {
                 validationError={errors.customerWANumber}
                 defaultValue={formData.customerWANumber}
             />
+            <InputForm
+                label="Password"
+                onChange={handlePassword}
+                name="password" 
+                placeholder="(must be at least 6 characters)"
+                validationError={errors.password}
+            />
 
-            <ButtonBtn disabled={!isFormFilled} className="mt-8">Create Booking</ButtonBtn>
+            <ButtonBtn disabled={!isFormFilled} className="mt-8">Sign Up & Create Booking</ButtonBtn>
         </form>
     )
 }
