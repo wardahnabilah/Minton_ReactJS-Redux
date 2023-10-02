@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react";
 import { useDocTitle } from "../../hooks/useDocTitle";
 import { ScheduleCard } from "./components/ScheduleCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSchedules } from "../../store/bookingScheduleSlice";
 
 export function BookingSchedule() {
     const [selectedDate, setSelectedDate] = useState('') 
     const [dateOptions, setDateOptions] = useState([])
-    const { scheduleList } = useSelector(state=>state.bookingSchedule)
+    const { scheduleList, loading } = useSelector(state=>state.bookingSchedule)
+    const dispatch = useDispatch()
     
     useDocTitle('Booking Schedule')
 
+    // Get booking schedules from API
+    useEffect(()=>{
+        dispatch(fetchSchedules())
+    }, [dispatch])
+
     // Get the date options from bookingSchedule slice
     useEffect(()=>{
-        const dates = scheduleList.map(schedule => schedule.date)
-        
-        setDateOptions(dates)
-    },[scheduleList])
+        if(!loading) {
+            const dates = scheduleList.map(schedule => schedule.date)
+            
+            setDateOptions(dates)
+        }
+    },[scheduleList, loading])
     
     // Handle select date
     function handleSelectedDate(event) {

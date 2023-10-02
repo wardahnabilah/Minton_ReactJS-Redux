@@ -1,89 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-// Generate schedule dates 
-function scheduleDate(n) {
-    const date = new Date()
+
+// Schedule date format (e.g. Monday, 18 September 2023)  
+function scheduleDateFormat(scheduleDate) {
+    const date = new Date(scheduleDate)
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
 
-    date.setDate(date.getDate() + n)
+    date.setDate(date.getDate())
     
     return date.toLocaleDateString('en-GB', options)
 }
 
+// fetchSchedules
+export const fetchSchedules = createAsyncThunk('/bookingSchedule/fetchSchedules', async () => {
+    const response = await axios.get(`${process.env.REACT_APP_HOST}/booking-schedules`)
+    return response.data
+})
 
+// Booking schedule slice
 const bookingScheduleSlice = createSlice({
     name: 'bookingSchedule',
     initialState: {
-        scheduleList: [
-            {
-                date: scheduleDate(1),
-                hourList: [
-                    {
-                        hour: '08:00 - 09:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '16:00 - 17:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '18:00 - 19:00',
-                        isBooked: false
-                    }
-                ]
-            },
-            {
-                date: scheduleDate(2),
-                hourList: [
-                    {
-                        hour: '08:00 - 09:00',
-                        isBooked: true
-                    },
-                    {
-                        hour: '16:00 - 17:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '18:00 - 19:00',
-                        isBooked: false
-                    }
-                ]
-            },
-            {
-                date: scheduleDate(3),
-                hourList: [
-                    {
-                        hour: '08:00 - 09:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '16:00 - 17:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '18:00 - 19:00',
-                        isBooked: false
-                    }
-                ]
-            },
-            {
-                date: scheduleDate(4),
-                hourList: [
-                    {
-                        hour: '08:00 - 09:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '16:00 - 17:00',
-                        isBooked: false
-                    },
-                    {
-                        hour: '18:00 - 19:00',
-                        isBooked: false
-                    }
-                ]
-            },
-        ]
+        scheduleList: [],
+        loading: true,
+        error: null
     },
     reducers: {
         updateSchedule: (state, action) => {
@@ -113,6 +54,28 @@ const bookingScheduleSlice = createSlice({
                 }
             })
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchSchedules.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(fetchSchedules.fulfilled, (state, action) => {
+                const schedules =  action.payload.data
+                
+                state.loading = false
+                state.scheduleList = schedules.map(schedule => {
+                    return {
+                        ...schedule,
+                        date: scheduleDateFormat(schedule.date)
+                    }
+                })
+                state.error = null
+            })
+            .addCase(fetchSchedules.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
     }
 })
 
