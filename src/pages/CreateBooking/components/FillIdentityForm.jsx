@@ -74,6 +74,7 @@ export function FillIdentityForm() {
                 name="password" 
                 placeholder="(must be at least 6 characters)"
                 validationError={errors.password}
+                type="password"
             />
 
             <ButtonBtn disabled={!isFormFilled} className="mt-8">Sign Up & Create Booking</ButtonBtn>
