@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-export function FormValidationOne() {
-    const { formData } = useSelector((state)=>state.newBooking)
+export function BookingDataValidation() {
+    const { bookingData } = useSelector((state)=>state.newBooking)
+
     const [equipmentData, setEquipmentData] = useState({
-        racket: formData.racket,
-        shuttlecock: formData.shuttlecock
+        racket: bookingData.racket,
+        shuttlecock: bookingData.shuttlecock
     })
-    const [formDataOne, setFormDataOne] = useState({
-        bookingDate: formData.bookingDate,
-        bookingHour: formData.bookingHour,
-        rent: formData.rent,
-        racket: formData.racket,
-        shuttlecock: formData.shuttlecock
+    const [bookingDetail, setBookingDetail] = useState({
+        bookingDate: bookingData.bookingDate,
+        bookingHour: bookingData.bookingHour,
+        rent: bookingData.rent,
+        racket: bookingData.racket,
+        shuttlecock: bookingData.shuttlecock
     })
 
     // For handling bookingDate and bookingHour select input
     function handleSelectChange(event) {
         const {name, value} = event.target
 
-        setFormDataOne((prevFormData)=>{
+        setBookingDetail((prevFormData)=>{
             return {
                 ...prevFormData,
                 [name]: value
@@ -31,9 +32,9 @@ export function FormValidationOne() {
     function handleRent(event) {
         const rent = event.target.value
 
-        // Store rent in formDataOne state
+        // Store rent in bookingDetail state
         if(rent !== '') {
-            setFormDataOne((prevFormData)=>{
+            setBookingDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     rent: rent
@@ -42,18 +43,18 @@ export function FormValidationOne() {
         }
     }
 
-    // Store equipmentData in formDataOne
+    // Store equipmentData in bookingDetail
     useEffect(()=>{
-        if(formDataOne.rent === 'yes') {
-            setFormDataOne((prevFormData)=>{
+        if(bookingDetail.rent === 'yes') {
+            setBookingDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     ...equipmentData
                 }
             })
         }
-        else if(formDataOne.rent === 'no') {
-            setFormDataOne((prevFormData)=>{
+        else if(bookingDetail.rent === 'no') {
+            setBookingDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     racket: '',
@@ -61,7 +62,7 @@ export function FormValidationOne() {
                 }
             })
         }
-    },[formDataOne.rent, equipmentData])
+    },[bookingDetail.rent, equipmentData])
 
     // For handling checkbox (equipment), get checkbox value
     function handleEquipment(event) {
@@ -83,25 +84,25 @@ export function FormValidationOne() {
     }
 
     // Check whether every input is empty or not
-    function validateFormData() {
+    function validateBookingData() {
         let isValid = true
         
         // bookingDate
-        if(formDataOne.bookingDate === '') {
+        if(bookingDetail.bookingDate === '') {
             isValid = false
         }
 
         // bookingHour
-        if(formDataOne.bookingHour === '') {
+        if(bookingDetail.bookingHour === '') {
             isValid = false
         }
 
         // rent
-        if(formDataOne.rent === '') {
+        if(bookingDetail.rent === '') {
             isValid = false
-        } else if(formDataOne.rent === 'yes') {
+        } else if(bookingDetail.rent === 'yes') {
             // racket and/or shuttlecock must be filled
-            if(formDataOne.racket === '' && formDataOne.shuttlecock === '') {
+            if(bookingDetail.racket === '' && bookingDetail.shuttlecock === '') {
                 isValid = false
             }
         }
@@ -110,10 +111,10 @@ export function FormValidationOne() {
     }
 
     return {
-        formDataOne,
+        bookingDetail,
         handleSelectChange,
         handleRent,
         handleEquipment,
-        validateFormData
+        validateBookingData
     }
 }

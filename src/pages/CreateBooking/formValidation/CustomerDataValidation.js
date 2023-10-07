@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-export function FormValidationTwo() {
-    const { formData } = useSelector(state=>state.newBooking)
+export function CustomerDataValidation() {
+    const { customerData } = useSelector(state=>state.newBooking)
     const [errors, setErrors] = useState({
         customerName: '',
         customerWANumber: '',
         password: ''
     })
-    const [formDataTwo, setFormDataTwo] = useState({
-        customerName: formData.customerName,
-        customerWANumber: formData.customerWANumber,
+    const [customerDetail, setCustomerDetail] = useState({
+        customerName: customerData.customerName,
+        customerWANumber: customerData.customerWANumber,
         password: ''
     })
 
@@ -36,9 +36,9 @@ export function FormValidationTwo() {
                 }
             })
         } 
-        // If the input is valid, store in formDataTwo state
+        // If the input is valid, store in customerDetail state
         else {
-            setFormDataTwo((prevFormData)=>{
+            setCustomerDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     customerName: customerNameInput
@@ -77,9 +77,9 @@ export function FormValidationTwo() {
                 }
             })
         }
-        // If the input is valid, store in formDataTwo state
+        // If the input is valid, store in customerDetail state
         else {
-            setFormDataTwo((prevFormData)=>{
+            setCustomerDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     customerWANumber: customerWANumberInput
@@ -115,7 +115,7 @@ export function FormValidationTwo() {
                 }
             })
         } else {
-            setFormDataTwo((prevFormData)=>{
+            setCustomerDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     password: passwordInput
@@ -131,21 +131,21 @@ export function FormValidationTwo() {
         }
     } 
 
-    function validateFormData() {
+    function validateCustomerData() {
         let isValid = true
 
         // customerName
-        if(formDataTwo.customerName === '' || errors.customerName !== '') {
+        if(customerDetail.customerName === '' || errors.customerName !== '') {
             isValid = false
         }
 
         // customerWANumber
-        if(formDataTwo.customerWANumber === '' || errors.customerWANumber !== '') {
+        if(customerDetail.customerWANumber === '' || errors.customerWANumber !== '') {
             isValid = false
         }
 
         // password
-        if(formDataTwo.password === '' || errors.password !== '') {
+        if(customerDetail.password === '' || errors.password !== '') {
             isValid = false
         }
 
@@ -153,8 +153,8 @@ export function FormValidationTwo() {
     }
 
     return {
-        formDataTwo,
-        validateFormData,
+        customerDetail,
+        validateCustomerData,
         handleCustomerName,
         handleCustomerWANumber,
         handlePassword,
