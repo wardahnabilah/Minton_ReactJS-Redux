@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 export function CustomerDataValidation() {
-    const { customerData } = useSelector(state=>state.newBooking)
+    const { customerData } = useSelector(state=>state.auth)
     const [errors, setErrors] = useState({
         customerName: '',
         customerWANumber: '',

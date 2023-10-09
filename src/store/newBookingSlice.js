@@ -3,15 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const newBookingSlice = createSlice({
     name: 'newBooking',
     initialState: {
-        formData: {
+        bookingData: {
             bookingDate: '',
             bookingHour: '',
             rent: '',
             racket: '',
             shuttlecock: '',
-            customerName: '',
-            customerWANumber: ''
         },
+        
         currentBookingData: {
             bookingDate: '',
             bookingHour: '',
@@ -23,17 +22,12 @@ const newBookingSlice = createSlice({
         }
     },
     reducers: {
-        addNewData: (state, action) => {
-            const newData = action.payload
+        addBookingData: (state, action) => {
+            const bookingDetail = action.payload
             
-            state.formData = {
-                ...state.formData,
-                ...newData
-            }
-
-            state.currentBookingData = {
-                ...state.currentBookingData,
-                ...newData
+            state.bookingData = {
+                ...state.bookingData,
+                ...bookingDetail
             }
         },
 
@@ -68,5 +62,5 @@ const newBookingSlice = createSlice({
     }
 })
 
-export const { addNewData, updateCurrentBooking, resetFormData, generateBookingID } = newBookingSlice.actions
+export const { addBookingData, updateCurrentBooking, resetFormData, generateBookingID } = newBookingSlice.actions
 export const newBookingReducer = newBookingSlice.reducer
