@@ -1,8 +1,8 @@
 import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
-import { FormValidationTwo } from "../formValidation/FormValidationTwo";
+import { CustomerDataValidation } from "../formValidation/CustomerDataValidation";
 import { useEffect, useState } from "react";
-import { addNewData, generateBookingID, resetFormData } from "../../../store/newBookingSlice";
+import { addCustomerData, generateBookingID, resetFormData } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
@@ -11,31 +11,33 @@ import { toast } from "react-toastify";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const {formDataTwo, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateFormData} = FormValidationTwo()
+    
+    const {customerDetail, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateCustomerData} = CustomerDataValidation()
+    
     const dispatch = useDispatch()
-    const { formData } = useSelector(state=>state.newBooking)
+    const { customerData } = useSelector(state=>state.newBooking)
     const navigateTo = useNavigate()
 
     useDocTitle('Step 2 - Fill Identity')
 
     // Disable the button if the form is not filled
     useEffect(()=>{
-        if(validateFormData()) {
+        if(validateCustomerData()) {
             setIsFormFilled(true)
         } else {
             setIsFormFilled(false)
         }
-    },[formDataTwo, validateFormData])
+    },[customerDetail, validateCustomerData])
 
     // Handle submit form
     function handleSubmit(event) {
         event.preventDefault()
 
-        if(validateFormData()) {
-            dispatch(addNewData(formDataTwo))
+        if(validateCustomerData()) {
+            dispatch(addCustomerData(customerDetail))
             dispatch(generateBookingID())
 
-            dispatch(updateSchedule({bookingHour: formData.bookingHour, bookingDate: formData.bookingDate}))
+            dispatch(updateSchedule({bookingHour: customerData.bookingHour, bookingDate: customerData.bookingDate}))
 
             // Reset the form to be empty
             dispatch(resetFormData())
@@ -58,7 +60,7 @@ export function FillIdentityForm() {
                 name="customerName" 
                 placeholder="Alex Johnson"
                 validationError={errors.customerName}
-                defaultValue={formData.customerName}
+                defaultValue={customerData.customerName}
             />
             <InputForm
                 label="WA Number (10-15 digits)"
@@ -66,7 +68,7 @@ export function FillIdentityForm() {
                 name="customerWANumber" 
                 placeholder="081231231231"
                 validationError={errors.customerWANumber}
-                defaultValue={formData.customerWANumber}
+                defaultValue={customerData.customerWANumber}
             />
             <InputForm
                 label="Password"
