@@ -15,10 +15,35 @@ export function SelectScheduleForm({handleNextStep}) {
     
     const dispatch = useDispatch()
     const { scheduleList } = useSelector(state=>state.bookingSchedule)
-    const [dateOptions, setDateOptions] = useState([]) 
+    
+    const [dateOptions, setDateOptions] = useState([])
     const [hourOptions, setHourOptions] = useState([])
 
     useDocTitle('Step 1 - Select Schedule')
+
+    // Get the date options from scheduleList slice
+    useEffect(()=>{
+        const dateOptions = scheduleList.map(schedule => {
+            return {
+                dateVal: schedule.date,
+                dateOption: schedule.dateOption
+            }
+        })
+        
+        setDateOptions(dateOptions)
+    },[scheduleList])
+
+    // Get the hour options
+    useEffect(()=>{
+        const schedule = scheduleList.find(schedule => schedule.date === bookingDetail.bookingDate)
+
+        if(schedule) {
+            const hourList = schedule.hourList.map(hourListItem => hourListItem)
+
+            setHourOptions(hourList)
+        }
+        
+    },[bookingDetail.bookingDate, scheduleList])
 
     // Open equipment checkbox if rent is 'yes'
     useEffect(()=>{
@@ -35,25 +60,6 @@ export function SelectScheduleForm({handleNextStep}) {
             setIsFormFilled(false)
         } 
     },[bookingDetail, validateBookingData])
-
-    // Get the date options from scheduleList slice
-    useEffect(()=>{
-        const dates = scheduleList.map(schedule => schedule.date)
-        
-        setDateOptions(dates)
-    },[scheduleList])
-
-    // Get the hour options
-    useEffect(()=>{
-        const schedule = scheduleList.find(schedule => schedule.date === bookingDetail.bookingDate)
-
-        if(schedule) {
-            const hourList = schedule.hourList.map(hourListItem => hourListItem)
-
-            setHourOptions(hourList)
-        }
-        
-    },[bookingDetail.bookingDate, scheduleList])
 
     function handleForm(event) {
         event.preventDefault()

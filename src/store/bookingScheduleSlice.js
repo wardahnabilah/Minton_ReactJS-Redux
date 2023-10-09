@@ -67,7 +67,7 @@ const bookingScheduleSlice = createSlice({
                 state.scheduleList = schedules.map(schedule => {
                     return {
                         ...schedule,
-                        date: scheduleDateFormat(schedule.date)
+                        dateOption: scheduleDateFormat(schedule.date)
                     }
                 })
                 state.error = null

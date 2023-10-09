@@ -20,7 +20,7 @@ export function BookingSchedule() {
     // Get the date options from bookingSchedule slice
     useEffect(()=>{
         if(!loading) {
-            const dates = scheduleList.map(schedule => schedule.date)
+            const dates = scheduleList.map(schedule => schedule.dateOption)
             
             setDateOptions(dates)
         }

@@ -6,10 +6,10 @@ export function SelectForm({name, options, label, value, onChange, disabled}) {
                 { options.map((option, index) => {
                     return <option 
                                 className={option.isBooked ? 'hidden' : ''} 
-                                value={option.hour ? option.hour : option} 
+                                value={option.hour ? option.hour : option.dateVal} 
                                 key={index}
                             >
-                                {option.hour ? option.hour : option}
+                                {option.hour ? option.hour : option.dateOption}
                             </option>
                 })}    
             </select>
