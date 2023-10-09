@@ -8,7 +8,7 @@ export function ProtectedRoute({children}) {
     const navigateTo = useNavigate()
 
     useEffect(()=>{
-        if(!currentBookingData.bookingID) {
+        if(!currentBookingData.bookingId) {
 
             toast.error("You can't access this page", {
                 position: 'top-center',
@@ -19,11 +19,11 @@ export function ProtectedRoute({children}) {
         }
 
     // eslint-disable-next-line
-    }, [currentBookingData.bookingID])
+    }, [currentBookingData.bookingId])
 
     return (
         <>
-            { currentBookingData.bookingID && children }
+            { currentBookingData.bookingId && children }
         </>
     )  
 }

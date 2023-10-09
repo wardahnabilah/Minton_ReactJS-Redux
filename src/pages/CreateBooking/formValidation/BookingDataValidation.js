@@ -57,8 +57,8 @@ export function BookingDataValidation() {
             setBookingDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
-                    racket: '',
-                    shuttlecock: ''
+                    racket: 'no',
+                    shuttlecock: 'no'
                 }
             })
         }
