@@ -1,4 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+// postBooking
+export const postBooking = createAsyncThunk('newBooking/postBooking', async (booking) => {
+    const response = await axios({
+        url: '/bookings',
+        method: 'post',
+        baseURL: `${process.env.REACT_APP_HOST}`,
+        headers: {
+            'Authorization': `Bearer ${booking.token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        data: JSON.stringify(booking.bookingData)
+    })
+
+    const data = await response.data
+
+    return data
+})
 
 const newBookingSlice = createSlice({
     name: 'newBooking',
@@ -18,8 +38,11 @@ const newBookingSlice = createSlice({
             racket: '',
             shuttlecock: '',
             customerName: '',
-            customerWANumber: ''
-        }
+            customerWANumber: '',
+        },
+
+        loading: false,
+        error: ''
     },
     reducers: {
         addBookingData: (state, action) => {
@@ -52,15 +75,22 @@ const newBookingSlice = createSlice({
                 customerWANumber: ''
             }
         },
-
-        generateBookingID: (state, action) => {
-            const name = state.currentBookingData.customerName.trim(' ').split(' ')[0]
-            const randomNumber = String(Math.round(Math.random() * 1000) + 1000)
-
-            state.currentBookingData.bookingID = name + randomNumber
-        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(postBooking.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(postBooking.fulfilled, (state, action) => {
+                state.loading = false
+                state.currentBookingData = action.payload
+            })
+            .addCase(postBooking.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
     }
 })
 
-export const { addBookingData, updateCurrentBooking, resetFormData, generateBookingID } = newBookingSlice.actions
+export const { addBookingData, updateCurrentBooking, resetFormData } = newBookingSlice.actions
 export const newBookingReducer = newBookingSlice.reducer

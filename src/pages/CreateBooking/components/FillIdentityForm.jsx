@@ -2,21 +2,22 @@ import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
 import { CustomerDataValidation } from "../formValidation/CustomerDataValidation";
 import { useEffect, useState } from "react";
-import { addCustomerData, generateBookingID, resetFormData } from "../../../store/newBookingSlice";
+import { postBooking } from "../../../store/newBookingSlice";
+import { postCustomer } from "../../../store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
-import { updateSchedule } from "../../../store/bookingScheduleSlice";
 import { toast } from "react-toastify";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
-    
+    const navigateTo = useNavigate()
+
     const {customerDetail, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateCustomerData} = CustomerDataValidation()
     
     const dispatch = useDispatch()
-    const { customerData } = useSelector(state=>state.newBooking)
-    const navigateTo = useNavigate()
+    const { customerData, token, error } = useSelector(state=>state.auth)
+    const { bookingData } = useSelector(state=>state.newBooking)
 
     useDocTitle('Step 2 - Fill Identity')
 
@@ -34,13 +35,17 @@ export function FillIdentityForm() {
         event.preventDefault()
 
         if(validateCustomerData()) {
-            dispatch(addCustomerData(customerDetail))
-            dispatch(generateBookingID())
+            dispatch(postCustomer(customerDetail))
+        }
+    }
 
-            dispatch(updateSchedule({bookingHour: customerData.bookingHour, bookingDate: customerData.bookingDate}))
-
-            // Reset the form to be empty
-            dispatch(resetFormData())
+    // post request for booking
+    useEffect(()=>{
+        if(token) {
+            dispatch(postBooking({
+                bookingData: {...bookingData},
+                token: token
+            }))
 
             toast.success('Booking Successfully Created!', {
                 position: 'top-center',
@@ -48,9 +53,13 @@ export function FillIdentityForm() {
             })
 
             navigateTo('/booking-success')
+        } else if(error) {
+            toast.error('Something went wrong, please try again', {
+                position: 'top-center',
+                autoClose: 3000
+            })
         }
-
-    }
+    },[token, error])
 
     return (
         <form onSubmit={handleSubmit} className="w-9/12 max-w-sm mx-auto mt-10 text-lg grid gap-3">
