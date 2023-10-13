@@ -83,7 +83,7 @@ const newBookingSlice = createSlice({
             })
             .addCase(postBooking.fulfilled, (state, action) => {
                 state.loading = false
-                state.currentBookingData = action.payload
+                state.currentBookingData = action.payload.data
             })
             .addCase(postBooking.rejected, (state, action) => {
                 state.loading = false
