@@ -100,7 +100,7 @@ export function BookingDetail() {
                         label="Booking ID"  
                     />
                     <div className="mt-[4.3rem] md:mt-[4.5rem] py-3 text-2xl text-center border-2 border-primary-dark dark:border-white rounded-full">
-                        {currentBookingData.bookingID}
+                        {currentBookingData.bookingId}
                     </div>
                 </CardBody>
             </div>
