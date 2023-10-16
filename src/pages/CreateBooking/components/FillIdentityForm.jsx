@@ -2,7 +2,7 @@ import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
 import { CustomerDataValidation } from "../formValidation/CustomerDataValidation";
 import { useEffect, useState } from "react";
-import { postBooking } from "../../../store/newBookingSlice";
+import { postBooking, resetFormData } from "../../../store/newBookingSlice";
 import { postCustomer } from "../../../store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -46,6 +46,9 @@ export function FillIdentityForm() {
                 bookingData: {...bookingData},
                 token: token
             }))
+
+            // Reset the form to be empty
+            dispatch(resetFormData())
 
             toast.success('Booking Successfully Created!', {
                 position: 'top-center',

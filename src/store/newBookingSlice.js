@@ -64,8 +64,8 @@ const newBookingSlice = createSlice({
         },
 
         resetFormData: (state) => {
-            state.formData = {
-                ...state.formData,
+            state.bookingData = {
+                ...state.bookingData,
                 bookingDate: '',
                 bookingHour: '',
                 rent: '',
