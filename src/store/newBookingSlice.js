@@ -20,6 +20,22 @@ export const postBooking = createAsyncThunk('newBooking/postBooking', async (boo
     return data
 })
 
+// deleteBooking
+export const deleteBooking = createAsyncThunk('newBooking/deleteBooking', async (booking) => {
+    const response = await axios({
+        url: `/bookings/${booking.bookingId}`,
+        method: 'delete',
+        baseURL: `${process.env.REACT_APP_HOST}`,
+        headers: {
+            'Authorization': `Bearer ${booking.token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+    })
+
+    return response.data
+})
+
 const newBookingSlice = createSlice({
     name: 'newBooking',
     initialState: {

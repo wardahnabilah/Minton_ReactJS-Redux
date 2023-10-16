@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { cancelSchedule } from "../../store/bookingScheduleSlice"
 import { toast } from "react-toastify"
+import { deleteBooking } from "../../store/newBookingSlice"
 
 export function BookingDetail() {
     const { currentBookingData } = useSelector(state=>state.newBooking) 
@@ -45,6 +46,11 @@ export function BookingDetail() {
     }
 
     function handleDeleteClick() {
+        dispatch(deleteBooking({
+            bookingId: currentBookingData.bookingId,
+            token: token
+        }))
+        
         dispatch(cancelSchedule({
             bookingHour: currentBookingData.bookingHour, 
             bookingDate: currentBookingData.bookingDate,
