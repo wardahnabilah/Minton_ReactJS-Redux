@@ -8,6 +8,7 @@ import { toast } from "react-toastify"
 
 export function BookingDetail() {
     const { currentBookingData } = useSelector(state=>state.newBooking) 
+    const { token } = useSelector(state=>state.auth)
     const navigateTo = useNavigate()
     const dispatch = useDispatch()
 
@@ -44,14 +45,18 @@ export function BookingDetail() {
     }
 
     function handleDeleteClick() {
-        dispatch(cancelSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
+        dispatch(cancelSchedule({
+            bookingHour: currentBookingData.bookingHour, 
+            bookingDate: currentBookingData.bookingDate,
+            token: token
+        }))
 
         toast.success('Booking cancelled', {
             position: 'top-center',
             autoClose: 3000
         })
         
-        navigateTo(`/booking-schedule`)
+        navigateTo('/')
     }
 
     return (

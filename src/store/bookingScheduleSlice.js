@@ -18,6 +18,52 @@ export const fetchSchedules = createAsyncThunk('/bookingSchedule/fetchSchedules'
     return response.data
 })
 
+// updateSchedule
+export const updateSchedule = createAsyncThunk('bookingSchedule/updateSchedule', async (booking) => {
+    const data = {
+        bookingDate: booking.bookingDate,
+        bookingHour: booking.bookingHour,
+        action: 'update'
+    }
+    
+    const response = await axios({
+        url: '/booking-schedules',
+        method: 'patch',
+        baseURL: `${process.env.REACT_APP_HOST}`,
+        headers: {
+            'Authorization': `Bearer ${booking.token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        data: JSON.stringify(data)
+    })
+
+    return response.data
+})
+
+// cancelSchedule
+export const cancelSchedule = createAsyncThunk('bookingSchedule/cancelSchedule', async (booking) => {
+    const data = {
+        bookingDate: booking.bookingDate,
+        bookingHour: booking.bookingHour,
+        action: 'cancel'
+    }
+    
+    const response = await axios({
+        url: '/booking-schedules',
+        method: 'patch',
+        baseURL: `${process.env.REACT_APP_HOST}`,
+        headers: {
+            'Authorization': `Bearer ${booking.token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        data: JSON.stringify(data)
+    })
+
+    return response.data
+})
+
 // Booking schedule slice
 const bookingScheduleSlice = createSlice({
     name: 'bookingSchedule',
@@ -26,35 +72,7 @@ const bookingScheduleSlice = createSlice({
         loading: true,
         error: null
     },
-    reducers: {
-        updateSchedule: (state, action) => {
-            const { bookingDate, bookingHour} = action.payload
-
-            state.scheduleList.forEach(schedule => {
-                if(schedule.date === bookingDate) {
-                    schedule.hourList.forEach(hourListItem => {
-                        if(hourListItem.hour === bookingHour) {
-                            hourListItem.isBooked = true
-                        }
-                    })
-                }
-            })
-        },
-
-        cancelSchedule: (state, action) => {
-            const { bookingDate, bookingHour} = action.payload
-
-            state.scheduleList.forEach(schedule => {
-                if(schedule.date === bookingDate) {
-                    schedule.hourList.forEach(hourListItem => {
-                        if(hourListItem.hour === bookingHour) {
-                            hourListItem.isBooked = false
-                        }
-                    })
-                }
-            })
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchSchedules.pending, (state) => {
@@ -76,8 +94,31 @@ const bookingScheduleSlice = createSlice({
                 state.loading = false
                 state.error = action.error.message
             })
+            // updateSchedule
+            .addCase(updateSchedule.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(updateSchedule.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = null
+            })
+            .addCase(updateSchedule.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            // cancelSchedule
+            .addCase(cancelSchedule.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(cancelSchedule.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = null
+            })
+            .addCase(cancelSchedule.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
     }
 })
 
-export const { updateSchedule, cancelSchedule } = bookingScheduleSlice.actions
 export const bookingScheduleReducer = bookingScheduleSlice.reducer

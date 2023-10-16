@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
 import { toast } from "react-toastify";
+import { updateSchedule } from "../../../store/bookingScheduleSlice";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
@@ -44,6 +45,12 @@ export function FillIdentityForm() {
         if(token) {
             dispatch(postBooking({
                 bookingData: {...bookingData},
+                token: token
+            }))
+
+            dispatch(updateSchedule({
+                bookingDate: bookingData.bookingDate,
+                bookingHour: bookingData.bookingHour,
                 token: token
             }))
 
