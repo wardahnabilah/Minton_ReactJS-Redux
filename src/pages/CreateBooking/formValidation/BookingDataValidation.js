@@ -102,7 +102,7 @@ export function BookingDataValidation() {
             isValid = false
         } else if(bookingDetail.rent === 'yes') {
             // racket and/or shuttlecock must be filled
-            if(bookingDetail.racket === '' && bookingDetail.shuttlecock === '') {
+            if(bookingDetail.racket !== 'yes' && bookingDetail.shuttlecock !== 'yes') {
                 isValid = false
             }
         }
