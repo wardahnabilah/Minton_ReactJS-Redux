@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { SelectForm } from "../../../components/elements/SelectForm"
 import { Radio, Checkbox } from "@material-tailwind/react"
 import { ButtonBtn } from "../../../components/elements/Buttons"
-import { FormValidationOne } from "../formValidation/FormValidationOne"
+import { BookingDataValidation } from "../formValidation/BookingDataValidation"
 import { useDispatch, useSelector } from "react-redux"
 import { updateCurrentBooking } from "../../../store/newBookingSlice"
 import { useDocTitle } from "../../../hooks/useDocTitle"
@@ -10,40 +10,32 @@ import { useDocTitle } from "../../../hooks/useDocTitle"
 export function SelectScheduleForm({handleNextStep}) { 
     const [isRent, setIsRent] = useState(false)
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const { formDataOne, handleSelectChange, handleRent, handleEquipment, validateFormData } = FormValidationOne()
+
+    const { bookingDetail, handleSelectChange, handleRent, handleEquipment, validateBookingData } = BookingDataValidation()
+    
     const dispatch = useDispatch()
     const { scheduleList } = useSelector(state=>state.bookingSchedule)
-    const [dateOptions, setDateOptions] = useState([]) 
+    
+    const [dateOptions, setDateOptions] = useState([])
     const [hourOptions, setHourOptions] = useState([])
 
     useDocTitle('Step 1 - Select Schedule')
 
-    // Open equipment checkbox if rent is 'yes'
-    useEffect(()=>{
-        if(formDataOne.rent === 'yes'){
-            setIsRent(true)
-        }
-    },[formDataOne.rent]) 
-
-    // Disable the button if the form is not filled
-    useEffect(()=>{
-        if(validateFormData()) {
-            setIsFormFilled(true)
-        } else {
-            setIsFormFilled(false)
-        } 
-    },[formDataOne, validateFormData])
-
     // Get the date options from scheduleList slice
     useEffect(()=>{
-        const dates = scheduleList.map(schedule => schedule.date)
+        const dateOptions = scheduleList.map(schedule => {
+            return {
+                dateVal: schedule.date,
+                dateOption: schedule.dateOption
+            }
+        })
         
-        setDateOptions(dates)
+        setDateOptions(dateOptions)
     },[scheduleList])
 
     // Get the hour options
     useEffect(()=>{
-        const schedule = scheduleList.find(schedule => schedule.date === formDataOne.bookingDate)
+        const schedule = scheduleList.find(schedule => schedule.date === bookingDetail.bookingDate)
 
         if(schedule) {
             const hourList = schedule.hourList.map(hourListItem => hourListItem)
@@ -51,13 +43,29 @@ export function SelectScheduleForm({handleNextStep}) {
             setHourOptions(hourList)
         }
         
-    },[formDataOne.bookingDate, scheduleList])
+    },[bookingDetail.bookingDate, scheduleList])
+
+    // Open equipment checkbox if rent is 'yes'
+    useEffect(()=>{
+        if(bookingDetail.rent === 'yes'){
+            setIsRent(true)
+        }
+    },[bookingDetail.rent])
+
+    // Disable the button if the form is not filled
+    useEffect(()=>{
+        if(validateBookingData()) {
+            setIsFormFilled(true)
+        } else {
+            setIsFormFilled(false)
+        } 
+    },[bookingDetail, validateBookingData])
 
     function handleForm(event) {
         event.preventDefault()
 
-        if(validateFormData()) {
-            dispatch(updateCurrentBooking(formDataOne))
+        if(validateBookingData()) {
+            dispatch(updateCurrentBooking(bookingDetail))
 
             handleNextStep()
         }
@@ -71,7 +79,7 @@ export function SelectScheduleForm({handleNextStep}) {
                 name="bookingDate"
                 options={dateOptions}
                 label="Select Date"
-                value={formDataOne.bookingDate}
+                value={bookingDetail.bookingDate}
             />
             {/* Select booking hour */}
             <SelectForm
@@ -79,7 +87,8 @@ export function SelectScheduleForm({handleNextStep}) {
                 name="bookingHour" 
                 options={hourOptions}
                 label="Select Hour"
-                value={formDataOne.bookingHour}
+                value={bookingDetail.bookingHour}
+                disabled={bookingDetail.bookingDate === '' ? true : false}
             />
             
             {/* Rent racket or shuttlecock */}
@@ -92,7 +101,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     value="yes"
                     onClick={()=>setIsRent(true)}
                     onChange={handleRent}
-                    defaultChecked={formDataOne.rent === 'yes'}
+                    defaultChecked={bookingDetail.rent === 'yes'}
                     className="border-primary-dark dark:border-white"
                 />
                 <Radio 
@@ -102,7 +111,7 @@ export function SelectScheduleForm({handleNextStep}) {
                     value="no"
                     onClick={()=>setIsRent(false)}
                     onChange={handleRent}
-                    defaultChecked={formDataOne.rent === 'no'}
+                    defaultChecked={bookingDetail.rent === 'no'}
                     className="border-primary-dark dark:border-white"
                 />
             </div>
@@ -117,7 +126,7 @@ export function SelectScheduleForm({handleNextStep}) {
                             name="racket"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
-                            defaultChecked={formDataOne.racket === 'yes'}
+                            defaultChecked={bookingDetail.racket === 'yes'}
                         />
                         <span className="p-3">Racket</span>
                         <svg className="absolute -top-3 -right-9 xsm:-right-1 -rotate-90 dark:stroke-white" width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -130,7 +139,7 @@ export function SelectScheduleForm({handleNextStep}) {
                             name="shuttlecock"
                             icon={<CheckIcon />}
                             className="border-primary-dark dark:border-white checked:bg-primary-dark/80 dark:checked:bg-white"
-                            defaultChecked={formDataOne.shuttlecock === 'yes'}
+                            defaultChecked={bookingDetail.shuttlecock === 'yes'}
                         />
                         <span className="p-3">Shuttlecock</span>
                         <svg className="absolute -top-2 -right-7 xsm:right-3 rotate-180 stroke-[.15rem] dark:stroke-white" width="90" height="100" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,6 +1,6 @@
 import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
-import { FormValidationTwo } from "../formValidation/FormValidationTwo";
+import { CustomerDataValidation } from "../formValidation/CustomerDataValidation";
 import { useEffect, useState } from "react";
 import { resetFormData, updateCurrentBooking } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,28 +11,29 @@ import { toast } from "react-toastify";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
-    const {formDataTwo, errors, handleCustomerName, handleCustomerWANumber, validateFormData} = FormValidationTwo()
+    const {customerDetail, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateCustomerData} = CustomerDataValidation()
     const dispatch = useDispatch()
     const { currentBookingData } = useSelector(state=>state.newBooking)
     const navigateTo = useNavigate()
+    const { customerData } = useSelector(state=>state.auth)
 
     useDocTitle('Step 2 - Fill Identity')
 
     // Disable the button if the form is not filled
     useEffect(()=>{
-        if(validateFormData()) {
+        if(validateCustomerData()) {
             setIsFormFilled(true)
         } else {
             setIsFormFilled(false)
         }
-    },[formDataTwo, validateFormData])
+    },[customerDetail, validateCustomerData])
 
     // Handle submit form
     function handleSubmit(event) {
         event.preventDefault()
 
-        if(validateFormData()) {
-            dispatch(updateCurrentBooking(formDataTwo))
+        if(validateCustomerData()) {
+            dispatch(updateCurrentBooking(customerDetail))
 
             dispatch(updateSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
 
@@ -57,7 +58,7 @@ export function FillIdentityForm() {
                 name="customerName" 
                 placeholder="Alex Johnson"
                 validationError={errors.customerName}
-                defaultValue={currentBookingData.customerName}
+                defaultValue={customerData.customerName}
             />
             <InputForm
                 label="WA Number (10-15 digits)"
@@ -65,7 +66,7 @@ export function FillIdentityForm() {
                 name="customerWANumber" 
                 placeholder="081231231231"
                 validationError={errors.customerWANumber}
-                defaultValue={currentBookingData.customerWANumber}
+                defaultValue={customerData.customerWANumber}
             />
 
             <ButtonBtn disabled={!isFormFilled} className="mt-8">Edit Booking</ButtonBtn>
