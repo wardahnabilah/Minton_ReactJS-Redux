@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-export function FormValidationTwo() {
-    const { currentBookingData } = useSelector(state=>state.newBooking)
+export function CustomerDataValidation() {
+    const { customerData } = useSelector(state=>state.auth)
     const [errors, setErrors] = useState({
         customerName: '',
-        customerWANumber: ''
+        customerWANumber: '',
+        password: ''
     })
-    const [formDataTwo, setFormDataTwo] = useState({
-        customerName: currentBookingData.customerName,
-        customerWANumber: currentBookingData.customerWANumber
+    const [customerDetail, setCustomerDetail] = useState({
+        customerName: customerData.customerName,
+        customerWANumber: customerData.customerWANumber,
+        password: ''
     })
 
     // Handle customerName
@@ -34,9 +36,9 @@ export function FormValidationTwo() {
                 }
             })
         } 
-        // If the input is valid, store in formDataTwo state
+        // If the input is valid, store in customerDetail state
         else {
-            setFormDataTwo((prevFormData)=>{
+            setCustomerDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     customerName: customerNameInput
@@ -50,6 +52,7 @@ export function FormValidationTwo() {
                 }
             })
         }
+
     }
 
     // Handle customerWANumber
@@ -74,9 +77,9 @@ export function FormValidationTwo() {
                 }
             })
         }
-        // If the input is valid, store in formDataTwo state
+        // If the input is valid, store in customerDetail state
         else {
-            setFormDataTwo((prevFormData)=>{
+            setCustomerDetail((prevFormData)=>{
                 return {
                     ...prevFormData,
                     customerWANumber: customerWANumberInput
@@ -92,16 +95,57 @@ export function FormValidationTwo() {
         }
     }
 
-    function validateFormData() {
+    // Handle password
+    function handlePassword(event) {
+        const validPassword = /^.{6,}/g
+        const passwordInput = event.target.value
+
+        if(passwordInput === '') {
+            setErrors((errors)=>{
+                return {
+                    ...errors,
+                    password: 'This field is required'
+                }
+            })
+        } else if(!validPassword.test(passwordInput)) {
+            setErrors((errors)=>{
+                return {
+                    ...errors,
+                    password: 'Password must be at least 6 characters'
+                }
+            })
+        } else {
+            setCustomerDetail((prevFormData)=>{
+                return {
+                    ...prevFormData,
+                    password: passwordInput
+                }
+            })
+
+            setErrors((errors)=>{
+                return {
+                    ...errors,
+                    password: ''
+                }
+            })
+        }
+    } 
+
+    function validateCustomerData() {
         let isValid = true
 
         // customerName
-        if(formDataTwo.customerName === '' || errors.customerName !== '') {
+        if(customerDetail.customerName === '' || errors.customerName !== '') {
             isValid = false
         }
 
         // customerWANumber
-        if(formDataTwo.customerWANumber === '' || errors.customerWANumber !== '') {
+        if(customerDetail.customerWANumber === '' || errors.customerWANumber !== '') {
+            isValid = false
+        }
+
+        // password
+        if(customerDetail.password === '' || errors.password !== '') {
             isValid = false
         }
 
@@ -109,10 +153,11 @@ export function FormValidationTwo() {
     }
 
     return {
-        formDataTwo,
-        validateFormData,
+        customerDetail,
+        validateCustomerData,
         handleCustomerName,
         handleCustomerWANumber,
+        handlePassword,
         errors
     }
 }
