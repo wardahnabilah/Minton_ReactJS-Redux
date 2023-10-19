@@ -75,7 +75,12 @@ const newBookingSlice = createSlice({
         // patchBooking
         patchBookingLoading: false,
         patchBookingStatus: '',
-        patchBookingError: ''
+        patchBookingError: '',
+
+        // patchBooking
+        deleteBookingLoading: false,
+        deleteBookingStatus: '',
+        deleteBookingError: ''
     },
     reducers: {
         addBookingData: (state, action) => {
@@ -137,6 +142,19 @@ const newBookingSlice = createSlice({
             .addCase(patchBooking.rejected, (state, action) => {
                 state.patchBookingLoading = false
                 state.patchBookingError = action.error.message
+            })
+
+            // deleteBooking
+            .addCase(deleteBooking.pending, (state) => {
+                state.deleteBookingLoading = true
+            })
+            .addCase(deleteBooking.fulfilled, (state, action) => {
+                state.deleteBookingLoading = false
+                state.deleteBookingStatus = action.payload.status
+            })
+            .addCase(deleteBooking.rejected, (state, action) => {
+                state.deleteBookingLoading = false
+                state.deleteBookingError = action.error.message
             })
     }
 })

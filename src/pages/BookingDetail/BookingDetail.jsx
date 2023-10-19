@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom"
 import { cancelSchedule } from "../../store/bookingScheduleSlice"
 import { toast } from "react-toastify"
 import { deleteBooking } from "../../store/newBookingSlice"
+import { useEffect } from "react"
 
 export function BookingDetail() {
-    const { currentBookingData } = useSelector(state=>state.newBooking) 
+    const { currentBookingData, deleteBookingStatus } = useSelector(state=>state.newBooking) 
     const { token } = useSelector(state=>state.auth)
     const navigateTo = useNavigate()
     const dispatch = useDispatch()
@@ -54,20 +55,24 @@ export function BookingDetail() {
             bookingId: currentBookingData.bookingId,
             token: token
         }))
-        
-        dispatch(cancelSchedule({
-            bookingHour: currentBookingData.bookingHour, 
-            bookingDate: currentBookingData.bookingDate,
-            token: token
-        }))
-
-        toast.success('Booking cancelled', {
-            position: 'top-center',
-            autoClose: 3000
-        })
-        
-        navigateTo('/')
     }
+
+    useEffect(()=>{
+        if(deleteBookingStatus === 200) {
+            dispatch(cancelSchedule({
+                bookingHour: currentBookingData.bookingHour, 
+                bookingDate: currentBookingData.bookingDate,
+                token: token
+            }))
+    
+            toast.success('Booking cancelled', {
+                position: 'top-center',
+                autoClose: 3000
+            })
+            
+            navigateTo('/')
+        }
+    }, [deleteBookingStatus])
 
     return (
         <section className="py-28">
