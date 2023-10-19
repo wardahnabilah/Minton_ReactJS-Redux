@@ -18,7 +18,7 @@ export function FillIdentityForm() {
     
     const dispatch = useDispatch()
     const { customerData, token, error } = useSelector(state=>state.auth)
-    const { bookingData } = useSelector(state=>state.newBooking)
+    const { bookingData, postBookingStatus } = useSelector(state=>state.newBooking)
 
     useDocTitle('Step 2 - Fill Identity')
 
@@ -47,7 +47,16 @@ export function FillIdentityForm() {
                 bookingData: {...bookingData},
                 token: token
             }))
+        } else if(error) {
+            toast.error('Something went wrong, please try again', {
+                position: 'top-center',
+                autoClose: 3000
+            })
+        }
+    },[token, error])
 
+    useEffect(()=>{
+        if(postBookingStatus === 201) {
             dispatch(updateSchedule({
                 bookingDate: bookingData.bookingDate,
                 bookingHour: bookingData.bookingHour,
@@ -69,7 +78,9 @@ export function FillIdentityForm() {
                 autoClose: 3000
             })
         }
-    },[token, error])
+
+    }, [postBookingStatus, error])
+
 
     return (
         <form onSubmit={handleSubmit} className="w-9/12 max-w-sm mx-auto mt-10 text-lg grid gap-3">

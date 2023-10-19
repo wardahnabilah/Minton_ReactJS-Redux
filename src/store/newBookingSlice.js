@@ -67,8 +67,10 @@ const newBookingSlice = createSlice({
         },
         currentBookingData: {},
 
-        loading: false,
-        error: '',
+        // postBooking
+        postBookingLoading: false,
+        postBookingStatus: '',
+        postBookingError: '',
 
         // patchBooking
         patchBookingLoading: false,
@@ -111,15 +113,16 @@ const newBookingSlice = createSlice({
         builder
             // postBooking
             .addCase(postBooking.pending, (state) => {
-                state.loading = true
+                state.postBookingLoading = true
             })
             .addCase(postBooking.fulfilled, (state, action) => {
-                state.loading = false
+                state.postBookingLoading = false
                 state.currentBookingData = action.payload.data
+                state.postBookingStatus = action.payload.status
             })
             .addCase(postBooking.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
+                state.postBookingLoading = false
+                state.postBookingError = action.error.message
             })
 
             // patchBooking
