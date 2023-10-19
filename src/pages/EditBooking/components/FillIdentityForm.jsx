@@ -2,20 +2,21 @@ import { InputForm } from "../../../components/elements/InputForm";
 import { ButtonBtn } from "../../../components/elements/Buttons";
 import { CustomerDataValidation } from "../formValidation/CustomerDataValidation";
 import { useEffect, useState } from "react";
-import { resetFormData, updateCurrentBooking } from "../../../store/newBookingSlice";
+import { patchBooking, updateCurrentBooking } from "../../../store/newBookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDocTitle } from "../../../hooks/useDocTitle"
 import { updateSchedule } from "../../../store/bookingScheduleSlice";
 import { toast } from "react-toastify";
+import { patchCustomer } from "../../../store/authSlice";
 
 export function FillIdentityForm() {
     const [isFormFilled, setIsFormFilled] = useState(false)
     const {customerDetail, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateCustomerData} = CustomerDataValidation()
     const dispatch = useDispatch()
-    const { currentBookingData } = useSelector(state=>state.newBooking)
+    const { currentBookingData, patchBookingStatus } = useSelector(state=>state.newBooking)
+    const { token, patchCustomerStatus } = useSelector(state=>state.auth)
     const navigateTo = useNavigate()
-    const { customerData } = useSelector(state=>state.auth)
 
     useDocTitle('Step 2 - Fill Identity')
 
@@ -35,20 +36,35 @@ export function FillIdentityForm() {
         if(validateCustomerData()) {
             dispatch(updateCurrentBooking(customerDetail))
 
-            dispatch(updateSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
+            dispatch(patchCustomer({
+                customerDetail: customerDetail,
+                token: token
+            }))
 
-            // Reset the form to be empty
-            dispatch(resetFormData())
+            dispatch(patchBooking({
+                currentBookingData: currentBookingData,
+                token: token
+            }))
+            
+            dispatch(updateSchedule({
+                bookingDate: currentBookingData.bookingDate,
+                bookingHour: currentBookingData.bookingHour,
+                token: token
+            }))
+        }
+    }
 
+    useEffect(()=>{
+        if(patchBookingStatus === 200 && patchCustomerStatus === 200) {
             toast.success('Booking Successfully Edited!', {
                 position: 'top-center',
                 autoClose: 3000
             })
 
-            navigateTo(`/bookings/${currentBookingData.bookingID}`)
+            navigateTo(`/bookings/${currentBookingData.bookingId}`)
         }
 
-    }
+    },[patchBookingStatus, patchCustomerStatus])
 
     return (
         <form onSubmit={handleSubmit} className="w-9/12 max-w-sm mx-auto mt-10 text-lg grid gap-3">
@@ -58,7 +74,7 @@ export function FillIdentityForm() {
                 name="customerName" 
                 placeholder="Alex Johnson"
                 validationError={errors.customerName}
-                defaultValue={customerData.customerName}
+                defaultValue={customerDetail.customerName}
             />
             <InputForm
                 label="WA Number (10-15 digits)"
@@ -66,7 +82,7 @@ export function FillIdentityForm() {
                 name="customerWANumber" 
                 placeholder="081231231231"
                 validationError={errors.customerWANumber}
-                defaultValue={customerData.customerWANumber}
+                defaultValue={customerDetail.customerWANumber}
             />
 
             <ButtonBtn disabled={!isFormFilled} className="mt-8">Edit Booking</ButtonBtn>
