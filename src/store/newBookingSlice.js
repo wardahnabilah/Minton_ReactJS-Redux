@@ -36,6 +36,25 @@ export const deleteBooking = createAsyncThunk('newBooking/deleteBooking', async 
     return response.data
 })
 
+// patchBooking
+export const patchBooking = createAsyncThunk('newBooking/patchBooking', async ({currentBookingData, token}) => {
+    const response = await axios({
+        url: `bookings/${currentBookingData.bookingId}`,
+        method: 'patch',
+        baseURL: `${process.env.REACT_APP_HOST}`,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        data: JSON.stringify(currentBookingData)
+    })
+
+    const data = await response.data
+
+    return data
+})
+
 const newBookingSlice = createSlice({
     name: 'newBooking',
     initialState: {
@@ -46,19 +65,15 @@ const newBookingSlice = createSlice({
             racket: '',
             shuttlecock: '',
         },
-        
-        currentBookingData: {
-            bookingDate: '',
-            bookingHour: '',
-            rent: '',
-            racket: '',
-            shuttlecock: '',
-            customerName: '',
-            customerWANumber: '',
-        },
+        currentBookingData: {},
 
         loading: false,
-        error: ''
+        error: '',
+
+        // patchBooking
+        patchBookingLoading: false,
+        patchBookingStatus: '',
+        patchBookingError: ''
     },
     reducers: {
         addBookingData: (state, action) => {
@@ -94,6 +109,7 @@ const newBookingSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // postBooking
             .addCase(postBooking.pending, (state) => {
                 state.loading = true
             })
@@ -104,6 +120,20 @@ const newBookingSlice = createSlice({
             .addCase(postBooking.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
+            })
+
+            // patchBooking
+            .addCase(patchBooking.pending, (state) => {
+                state.patchBookingLoading = true
+            })
+            .addCase(patchBooking.fulfilled, (state, action) => {
+                state.patchBookingLoading = false
+                state.patchBookingStatus = action.payload.status
+                state.currentBookingData = action.payload.data
+            })
+            .addCase(patchBooking.rejected, (state, action) => {
+                state.patchBookingLoading = false
+                state.patchBookingError = action.error.message
             })
     }
 })
