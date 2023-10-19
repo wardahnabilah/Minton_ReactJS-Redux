@@ -40,9 +40,13 @@ export function BookingDetail() {
     )
 
     function handleEditClick() {
-        dispatch(cancelSchedule({bookingHour: currentBookingData.bookingHour, bookingDate: currentBookingData.bookingDate}))
+        dispatch(cancelSchedule({
+            bookingHour: currentBookingData.bookingHour, 
+            bookingDate: currentBookingData.bookingDate,
+            token: token
+        }))
 
-        navigateTo(`/bookings/${currentBookingData.bookingID}/edit`)
+        navigateTo(`/bookings/${currentBookingData.bookingId}/edit`)
     }
 
     function handleDeleteClick() {
