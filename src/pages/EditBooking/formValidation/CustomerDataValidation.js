@@ -2,16 +2,15 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 export function CustomerDataValidation() {
-    const { customerData } = useSelector(state=>state.auth)
+    const { currentBookingData } = useSelector(state=>state.newBooking)
     const [errors, setErrors] = useState({
         customerName: '',
-        customerWANumber: '',
-        password: ''
+        customerWANumber: ''
     })
     const [customerDetail, setCustomerDetail] = useState({
-        customerName: customerData.customerName,
-        customerWANumber: customerData.customerWANumber,
-        password: ''
+        customerName: currentBookingData.customerName,
+        customerWANumber: currentBookingData.customerWANumber,
+        customerId: currentBookingData.customerId
     })
 
     // Handle customerName
@@ -95,42 +94,6 @@ export function CustomerDataValidation() {
         }
     }
 
-    // Handle password
-    function handlePassword(event) {
-        const validPassword = /^.{6,}/g
-        const passwordInput = event.target.value
-
-        if(passwordInput === '') {
-            setErrors((errors)=>{
-                return {
-                    ...errors,
-                    password: 'This field is required'
-                }
-            })
-        } else if(!validPassword.test(passwordInput)) {
-            setErrors((errors)=>{
-                return {
-                    ...errors,
-                    password: 'Password must be at least 6 characters'
-                }
-            })
-        } else {
-            setCustomerDetail((prevFormData)=>{
-                return {
-                    ...prevFormData,
-                    password: passwordInput
-                }
-            })
-
-            setErrors((errors)=>{
-                return {
-                    ...errors,
-                    password: ''
-                }
-            })
-        }
-    } 
-
     function validateCustomerData() {
         let isValid = true
 
@@ -144,11 +107,6 @@ export function CustomerDataValidation() {
             isValid = false
         }
 
-        // password
-        if(customerDetail.password === '' || errors.password !== '') {
-            isValid = false
-        }
-
         return isValid
     }
 
@@ -157,7 +115,6 @@ export function CustomerDataValidation() {
         validateCustomerData,
         handleCustomerName,
         handleCustomerWANumber,
-        handlePassword,
         errors
     }
 }
