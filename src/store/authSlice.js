@@ -40,8 +40,10 @@ const authSlice = createSlice({
             password:''
         },
         token: '',
-        loading: false,
-        error: '',
+        
+        // postCustomer
+        postCustomerLoading: false,
+        postCustomerError: '',
 
         // patchCustomer
         patchCustomerLoading: false,
@@ -62,16 +64,16 @@ const authSlice = createSlice({
         builder
             // postCustomer
             .addCase(postCustomer.pending, (state) => {
-                state.loading = true
+                state.postCustomerLoading = true
             }) 
             .addCase(postCustomer.fulfilled, (state, action) => {
-                state.loading = false
+                state.postCustomerLoading = false
                 state.token = action.payload.token
                 state.customerData = action.payload.customerData
             })
             .addCase(postCustomer.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
+                state.postCustomerLoading = false
+                state.postCustomerError = action.error.message
             })
 
             // patchCustomer

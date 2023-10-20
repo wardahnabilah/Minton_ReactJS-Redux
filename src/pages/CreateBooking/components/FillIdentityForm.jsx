@@ -17,8 +17,9 @@ export function FillIdentityForm() {
     const {customerDetail, errors, handleCustomerName, handleCustomerWANumber, handlePassword, validateCustomerData} = CustomerDataValidation()
     
     const dispatch = useDispatch()
-    const { customerData, token, error } = useSelector(state=>state.auth)
-    const { bookingData, postBookingStatus } = useSelector(state=>state.newBooking)
+    const { customerData, token, postCustomerError } = useSelector(state=>state.auth)
+    const { bookingData, postBookingStatus, postBookingError } = useSelector(state=>state.newBooking)
+    const { updateScheduleStatus, updateScheduleError } = useSelector(state=>state.bookingSchedule)
 
     useDocTitle('Step 2 - Fill Identity')
 
@@ -47,13 +48,13 @@ export function FillIdentityForm() {
                 bookingData: {...bookingData},
                 token: token
             }))
-        } else if(error) {
-            toast.error('Something went wrong, please try again', {
+        } else if(postCustomerError) {
+            toast.error(postCustomerError, {
                 position: 'top-center',
                 autoClose: 3000
             })
         }
-    },[token, error])
+    },[token, postCustomerError])
 
     useEffect(()=>{
         if(postBookingStatus === 201) {
@@ -62,24 +63,33 @@ export function FillIdentityForm() {
                 bookingHour: bookingData.bookingHour,
                 token: token
             }))
-
-            // Reset the form to be empty
-            dispatch(resetFormData())
-
-            toast.success('Booking Successfully Created!', {
-                position: 'top-center',
-                autoClose: 3000
-            })
-
-            navigateTo('/booking-success')
-        } else if(error) {
-            toast.error('Something went wrong, please try again', {
+        } else if(postBookingError) {
+            toast.error(postBookingError, {
                 position: 'top-center',
                 autoClose: 3000
             })
         }
 
-    }, [postBookingStatus, error])
+    }, [postBookingStatus, postBookingError])
+
+    useEffect(()=>{
+        if(updateScheduleStatus === 200) {
+             // Reset the form to be empty
+             dispatch(resetFormData())
+
+             toast.success('Booking Successfully Created!', {
+                 position: 'top-center',
+                 autoClose: 3000
+             })
+ 
+             navigateTo('/booking-success')
+        } else if(updateScheduleError) {
+            toast.error(updateScheduleError, {
+                position: 'top-center',
+                autoClose: 3000
+            })
+        }
+    }, [updateScheduleStatus, updateScheduleError])
 
 
     return (

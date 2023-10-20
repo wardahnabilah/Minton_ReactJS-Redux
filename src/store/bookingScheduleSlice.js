@@ -69,19 +69,31 @@ const bookingScheduleSlice = createSlice({
     name: 'bookingSchedule',
     initialState: {
         scheduleList: [],
-        loading: true,
-        error: null
+        
+        // fetchSchedule
+        fetchScheduleLoading: true,
+        fetchScheduleError: '',
+
+        // updateSchedule
+        updateScheduleLoading: false,
+        updateScheduleStatus: '',
+        updateScheduleError: '',
+
+        // cancelSchedule
+        cancelScheduleLoading: true,
+        cancelScheduleError: '',
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // fetchSchedule 
             .addCase(fetchSchedules.pending, (state) => {
-                state.loading = true
+                state.fetchScheduleLoading = true
             })
             .addCase(fetchSchedules.fulfilled, (state, action) => {
                 const schedules =  action.payload.data
                 
-                state.loading = false
+                state.fetchScheduleLoading = false
                 state.scheduleList = schedules.map(schedule => {
                     return {
                         ...schedule,
@@ -91,32 +103,32 @@ const bookingScheduleSlice = createSlice({
                 state.error = null
             })
             .addCase(fetchSchedules.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
+                state.fetchScheduleLoading = false
+                state.fetchScheduleError = action.error.message
             })
             // updateSchedule
             .addCase(updateSchedule.pending, (state) => {
-                state.loading = true
+                state.updateScheduleLoading = true
             })
             .addCase(updateSchedule.fulfilled, (state, action) => {
-                state.loading = false
-                state.error = null
+                state.updateScheduleLoading = false
+                state.updateScheduleStatus = action.payload.status
             })
             .addCase(updateSchedule.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
+                state.updateScheduleLoading = false
+                state.updateScheduleError = action.error.message
             })
             // cancelSchedule
             .addCase(cancelSchedule.pending, (state) => {
-                state.loading = true
+                state.cancelScheduleLoading = true
             })
             .addCase(cancelSchedule.fulfilled, (state, action) => {
-                state.loading = false
-                state.error = null
+                state.cancelScheduleLoading = false
+                state.cancelScheduleError = null
             })
             .addCase(cancelSchedule.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
+                state.cancelScheduleLoading = false
+                state.cancelScheduleError = action.error.message
             })
     }
 })
